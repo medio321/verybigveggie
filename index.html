@@ -49,7 +49,7 @@
     position: absolute;
     user-select: none;
     pointer-events: none;
-    will-change: transform, opacity;
+    will-change: transform, opacity, top, left;
     animation-timing-function: ease-in-out;
   }
 
@@ -229,8 +229,7 @@
   ctx.textBaseline = 'top';
   animate();
 
-
-  // Фоновые GIF-ки
+  // Вакханалия из гифок
   const gifUrls = [
     'https://giffun.ru/wp-content/uploads/2022/05/tenor-2.gif',
     'https://cs9.pikabu.ru/post_img/2016/09/30/10/1475253517166130123.gif',
@@ -240,56 +239,79 @@
 
   const gifBackground = document.getElementById('gif-background');
 
-  // Создаём N гифок на фоне (например, 12)
-  const numGifs = 12;
+  const numGifs = 60;
 
   function randomRange(min, max) {
     return Math.random() * (max - min) + min;
   }
 
+  // Массив для хранения параметров анимации каждого гифа
+  const gifs = [];
+
   for (let i = 0; i < numGifs; i++) {
     const img = document.createElement('img');
     img.src = gifUrls[Math.floor(Math.random() * gifUrls.length)];
-    // Случайный размер 100-250px
-    const size = randomRange(100, 250);
+
+    // Случайный размер от 80 до 220 px
+    const size = randomRange(80, 220);
     img.style.width = size + 'px';
     img.style.height = 'auto';
 
-    // Случайное позиционирование по экрану
+    // Случайные начальные позиции
     img.style.top = randomRange(0, window.innerHeight - size) + 'px';
     img.style.left = randomRange(0, window.innerWidth - size) + 'px';
 
-    // Анимация пульсации прозрачности и масштабирования
-    const animDuration = randomRange(6, 12); // секунд
-    img.style.animation = `pulse ${animDuration}s ease-in-out infinite alternate`;
-    img.style.animationDelay = `${randomRange(0, animDuration)}s`;
-
     gifBackground.appendChild(img);
+
+    // Запоминаем для анимации
+    gifs.push({
+      el: img,
+      baseTop: parseFloat(img.style.top),
+      baseLeft: parseFloat(img.style.left),
+      baseSize: size,
+      opacitySpeed: randomRange(0.5, 1.5),
+      scaleSpeed: randomRange(0.4, 1),
+      moveSpeedX: randomRange(-10, 10),
+      moveSpeedY: randomRange(-10, 10),
+      phase: Math.random() * 2 * Math.PI,
+    });
   }
 
-  // Добавляем CSS-анимацию пульсации через JS
-  const style = document.createElement('style');
-  style.textContent = `
-    @keyframes pulse {
-      0% {
-        opacity: 0.3;
-        transform: scale(0.8);
-      }
-      100% {
-        opacity: 0.8;
-        transform: scale(1.2);
-      }
-    }
-  `;
-  document.head.appendChild(style);
+  let lastTimestamp = 0;
+  function animateGifs(timestamp) {
+    if (!lastTimestamp) lastTimestamp = timestamp;
+    const delta = (timestamp - lastTimestamp) / 1000;
+    lastTimestamp = timestamp;
 
-  // Обновляем позицию при ресайзе (чтобы не выйти за экран)
+    gifs.forEach(gif => {
+      // Пульсация прозрачности: 0.3 - 1
+      const opacity = 0.65 + 0.35 * Math.sin(gif.phase);
+      gif.el.style.opacity = opacity;
+
+      // Пульсация размера: 0.85 - 1.15
+      const scale = 0.85 + 0.3 * Math.sin(gif.phase);
+      gif.el.style.transform = `scale(${scale})`;
+
+      // Легкие хаотичные смещения
+      const offsetX = gif.moveSpeedX * Math.sin(gif.phase);
+      const offsetY = gif.moveSpeedY * Math.cos(gif.phase);
+      gif.el.style.top = (gif.baseTop + offsetY) + 'px';
+      gif.el.style.left = (gif.baseLeft + offsetX) + 'px';
+
+      // Обновляем фазу
+      gif.phase += delta * (gif.opacitySpeed + gif.scaleSpeed);
+    });
+
+    requestAnimationFrame(animateGifs);
+  }
+  requestAnimationFrame(animateGifs);
+
+  // Корректируем позиции при ресайзе, чтобы не выходили за экран
   window.addEventListener('resize', () => {
-    const imgs = gifBackground.querySelectorAll('img');
-    imgs.forEach(img => {
-      const size = img.offsetWidth;
-      img.style.top = Math.min(parseFloat(img.style.top), window.innerHeight - size) + 'px';
-      img.style.left = Math.min(parseFloat(img.style.left), window.innerWidth - size) + 'px';
+    gifs.forEach(gif => {
+      const size = gif.el.offsetWidth;
+      gif.baseTop = Math.min(gif.baseTop, window.innerHeight - size);
+      gif.baseLeft = Math.min(gif.baseLeft, window.innerWidth - size);
     });
   });
 </script>
