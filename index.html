@@ -5,474 +5,149 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>🍆 $Veggie — MEME TOKEN</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&family=Press+Start+2P&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Rubik:wght@700&display=swap');
 
   :root {
-    --purple: #9b59b6;
-    --green: #2ecc71;
-    --pink: #ff2d95;
-    --yellow: #f1c40f;
-    --black: #111;
-    --white: #fff;
-    --shadow-glow: 0 0 10px #ff2d95, 0 0 20px #9b59b6, 0 0 30px #2ecc71;
-  }
-
-  * {
-    box-sizing: border-box;
+    --purple: #a020f0;
+    --green: #39ff14;
+    --light: #fff0ff;
+    --dark: #1a001f;
   }
 
   body, html {
-    margin: 0; padding: 0; height: 100%;
-    background: linear-gradient(135deg, #ff2d95, #9b59b6, #2ecc71);
-    font-family: 'Comic Neue', cursive, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: var(--white);
-    overflow-x: hidden;
-    user-select: none;
-    display: flex;
-    justify-content: center;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background: var(--dark);
+    font-family: 'Rubik', sans-serif;
+    overflow: hidden;
+    color: white;
   }
 
-  #eggplant-canvas {
+  /* Фон слайдшоу */
+  .slideshow {
     position: fixed;
     top: 0; left: 0;
-    width: 100%; height: 100%;
-    pointer-events: none;
-    z-index: 0;
-    filter: drop-shadow(0 0 6px #fff);
-  }
-
-  /* Основной контейнер, убрали flex-контейнер с колонками */
-  .main-wrapper {
-    max-width: 1200px;
     width: 100%;
-    margin: 60px 20px;
-    z-index: 1;
+    height: 100%;
+    z-index: 0;
+    overflow: hidden;
   }
+  .slideshow img {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    animation: fade 24s infinite;
+  }
+  @keyframes fade {
+    0% {opacity: 0;}
+    5% {opacity: 1;}
+    25% {opacity: 1;}
+    30% {opacity: 0;}
+    100% {opacity: 0;}
+  }
+  .slideshow img:nth-child(1) {animation-delay: 0s;}
+  .slideshow img:nth-child(2) {animation-delay: 6s;}
+  .slideshow img:nth-child(3) {animation-delay: 12s;}
+  .slideshow img:nth-child(4) {animation-delay: 18s;}
 
-  /* Левая основная часть */
+  /* Контейнер */
   .container {
-    background: rgba(0,0,0,0.75);
-    border-radius: 24px;
-    padding: 40px 30px;
-    box-shadow: var(--shadow-glow);
+    position: relative;
+    z-index: 2;
+    max-width: 650px;
+    margin: auto;
+    padding: 30px;
+    background: rgba(0, 0, 0, 0.75);
+    border-radius: 20px;
+    box-shadow: 0 0 40px rgba(255, 0, 255, 0.5);
     text-align: center;
-    border: 5px solid var(--pink);
-    overflow: auto;
-    max-height: 80vh;
   }
 
   h1 {
     font-family: 'Press Start 2P', cursive;
-    font-size: 3rem;
-    margin-bottom: 20px;
-    letter-spacing: 0.08em;
-    text-shadow:
-      0 0 8px var(--pink),
-      0 0 20px var(--purple),
-      0 0 30px var(--yellow);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 20px;
-  }
-
-  h1 .emoji {
-    font-size: 5rem;
-    animation: bounce 1.2s infinite alternate;
-    filter: drop-shadow(0 0 6px var(--yellow));
-  }
-
-  p.lead {
-    font-weight: 700;
-    font-size: 1.4rem;
-    margin: 12px 0 24px;
-    color: var(--yellow);
-    text-shadow: 0 0 8px #000;
+    font-size: 2.5rem;
+    color: var(--green);
+    text-shadow: 3px 3px var(--purple);
   }
 
   p {
     font-size: 1.1rem;
-    line-height: 1.6;
-    margin: 12px 0 20px;
-    color: #eee;
-    text-shadow: 0 0 6px #0009;
+    line-height: 1.5;
   }
 
   ul {
-    list-style: none;
-    padding: 0;
-    margin: 24px 0 32px;
     text-align: left;
-    font-weight: 700;
-    font-size: 1.1rem;
+    padding-left: 20px;
   }
-
   ul li {
-    margin-bottom: 16px;
-    position: relative;
-    padding-left: 36px;
-    color: var(--white);
-    text-shadow: 0 0 6px #000c;
-  }
-
-  ul li::before {
-    content: "🍆";
-    position: absolute;
-    left: 0;
-    top: 0;
-    font-size: 1.3rem;
-    animation: pulse 2s infinite alternate;
+    margin-bottom: 12px;
+    font-size: 1rem;
   }
 
   .links {
-    margin-top: 36px;
-    display: flex;
-    justify-content: center;
-    gap: 24px;
-    flex-wrap: wrap;
+    margin-top: 20px;
   }
-
   .links a {
-    font-family: 'Press Start 2P', cursive;
+    display: inline-block;
+    margin: 10px;
+    padding: 14px 24px;
     font-size: 1rem;
-    color: var(--black);
-    background: var(--yellow);
-    padding: 18px 40px;
-    border-radius: 40px;
-    font-weight: 900;
+    font-weight: bold;
+    background: var(--purple);
+    color: white;
+    border-radius: 50px;
+    box-shadow: 0 0 20px var(--purple);
+    transition: all 0.3s ease;
     text-decoration: none;
-    box-shadow:
-      0 0 12px var(--yellow),
-      0 0 24px var(--pink);
-    transition:
-      background-color 0.3s ease,
-      color 0.3s ease,
-      box-shadow 0.5s ease;
-    text-transform: uppercase;
   }
-
   .links a:hover {
-    background: var(--pink);
-    color: var(--white);
-    box-shadow:
-      0 0 18px var(--pink),
-      0 0 36px var(--yellow);
-    transform: scale(1.05);
+    background: var(--green);
+    color: black;
+    box-shadow: 0 0 25px var(--green);
   }
 
   footer {
-    margin-top: 48px;
-    font-family: 'Comic Neue', cursive;
-    font-size: 0.9rem;
-    color: #ddd;
-    text-shadow: 0 0 3px #0007;
-  }
-
-  /* Слайдшоу внутри контейнера */
-  .slider {
-    background: rgba(255, 255, 255, 0.15);
-    border-radius: 20px;
-    padding: 10px;
-    box-shadow:
-      0 0 10px #ff2d95aa,
-      0 0 20px #9b59b6aa;
-    backdrop-filter: blur(12px);
-    position: relative;
-    overflow: hidden;
-    max-height: 400px;
-    margin-top: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .slider img {
-    position: absolute;
-    max-width: 100%;
-    max-height: 100%;
-    border-radius: 20px;
-    user-select: none;
-    pointer-events: none;
-    box-shadow: 0 0 20px rgba(255,45,149,0.7);
-    opacity: 0;
-    transform-origin: center center;
-    transition: none;
-  }
-
-  .slider img.active {
-    opacity: 1;
-    position: relative;
-    z-index: 2;
-  }
-
-  /* Анимации для переходов */
-  @keyframes slideZoomRotateIn {
-    0% {
-      opacity: 0;
-      transform: scale(0.6) rotate(-45deg);
-    }
-    100% {
-      opacity: 1;
-      transform: scale(1) rotate(0deg);
-    }
-  }
-
-  @keyframes slideZoomRotateOut {
-    0% {
-      opacity: 1;
-      transform: scale(1) rotate(0deg);
-    }
-    100% {
-      opacity: 0;
-      transform: scale(0.4) rotate(30deg);
-    }
-  }
-
-  @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
-  @keyframes fadeOut {
-    from { opacity: 1; }
-    to { opacity: 0; }
-  }
-
-  @keyframes swing {
-    0% { transform: rotate(-5deg); }
-    50% { transform: rotate(5deg); }
-    100% { transform: rotate(-5deg); }
-  }
-
-  @keyframes bounce {
-    0% { transform: translateY(0); }
-    100% { transform: translateY(-20px); }
-  }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 1; text-shadow: 0 0 8px var(--yellow); }
-    50% { opacity: 0.6; text-shadow: 0 0 16px var(--pink); }
-  }
-
-  @media (max-width: 1000px) {
-    .main-wrapper {
-      margin: 30px 10px;
-    }
-    .container {
-      max-height: none;
-      width: 100%;
-    }
-    .slider {
-      height: 320px;
-      max-height: none;
-      margin-top: 30px;
-    }
+    margin-top: 15px;
+    font-size: 0.85rem;
+    color: #ccc;
   }
 </style>
 </head>
 <body>
-  <canvas id="eggplant-canvas"></canvas>
-  <div class="main-wrapper">
-    <div class="container" role="main" aria-label="$Veggie Meme Token Info">
-      <h1><span class="emoji" aria-hidden="true">🍆</span>$Veggie MEME</h1>
-      <p class="lead">🚀 The Ultimate Meme Community Token 🚀</p>
-      <p>Meet the legendary eggplant known everywhere on Telegram and beyond:</p>
-      <ul>
-        <li>💬 Official reactions in Durov’s channel</li>
-        <li>🎁 Telegram gifts and stickers</li>
-        <li>🤣 The iconic meme that never dies</li>
-        <li>📰 Featured in Telegram news stories</li>
-      </ul>
-      <p>Join the fun and become part of the $Veggie legend on TON! 😎🔥</p>
 
-      <div class="links" role="navigation" aria-label="Social and swap links">
-        <a id="btn-tg" href="https://t.me/verybigveggie" target="_blank" rel="noopener noreferrer" aria-label="Telegram channel link">Telegram</a>
-        <a id="btn-twitter" href="https://x.com/verybigveggie" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter) profile link">X (Twitter)</a>
-        <a id="btn-swap" href="https://dedust.io/swap/TON/EQAo-Mnt8Q2l9M90Sdk9OiTtzmVv3j8Tf382dBVpNRf9qWmY" target="_blank" rel="noopener noreferrer" aria-label="Swap on Dedust link">Swap on Dedust</a>
-      </div>
+<div class="slideshow">
+  <img src="https://i.imgur.com/xaysYKf.jpeg">
+  <img src="https://i.imgur.com/BKgNzkl.jpeg">
+  <img src="https://giffun.ru/wp-content/uploads/2022/05/1206845.gif">
+  <img src="https://i.imgur.com/rKmcxhs.jpeg">
+</div>
 
-      <div class="slider" aria-label="Funny images slideshow">
-        <!-- Слайды загрузятся через JS -->
-      </div>
-
-      <footer>© 2025 $Veggie Meme Token Community</footer>
-    </div>
+<div class="container">
+  <h1>🍆 $Veggie</h1>
+  <p><strong>Главный мем-токен TON</strong></p>
+  <p>Баклажан, который все знают в Telegram:</p>
+  <ul>
+    <li>В реакциях канала Дурова</li>
+    <li>В подарках Telegram</li>
+    <li>В эмодзи и стикерах</li>
+    <li>В новостях (про запрет анимации)</li>
+  </ul>
+  <p>Теперь это не просто мем, а криптовалюта комьюнити! 🚀</p>
+  <div class="links">
+    <a href="https://t.me/verybigveggie" target="_blank">Telegram</a>
+    <a href="https://x.com/verybigveggie" target="_blank">Twitter</a>
+    <a href="https://dedust.io/swap/TON/EQAo-Mnt8Q2l9M90Sdk9OiTtzmVv3j8Tf382dBVpNRf9qWmY" target="_blank">Swap</a>
   </div>
+  <footer>© 2025 $Veggie Meme Community</footer>
+</div>
 
-<script>
-  // Падающие баклажаны (эмоджи)
-  const canvas = document.getElementById('eggplant-canvas');
-  const ctx = canvas.getContext('2d');
-  let width, height;
-
-  function resize() {
-    width = window.innerWidth;
-    height = window.innerHeight;
-    canvas.width = width;
-    canvas.height = height;
-  }
-  resize();
-  window.addEventListener('resize', resize);
-
-  const emoji = "🍆";
-  const maxEggplants = 50;
-  const eggplants = [];
-
-  class Eggplant {
-    constructor() {
-      this.reset();
-    }
-    reset() {
-      this.x = Math.random() * width;
-      this.y = Math.random() * -height;
-      this.size = 24 + Math.random() * 36;
-      this.speed = 1.5 + Math.random() * 3;
-      this.swing = Math.random() * 2 * Math.PI;
-      this.swingSpeed = 0.03 + Math.random() * 0.04;
-      this.swingAmplitude = 30 + Math.random() * 20;
-      this.alpha = 0.4 + Math.random() * 0.6;
-      this.alphaSpeed = 0.01 + Math.random() * 0.02;
-      this.alphaDir = 1;
-    }
-    update() {
-      this.y += this.speed;
-      this.swing += this.swingSpeed;
-      this.x += Math.sin(this.swing) * 1.2;
-
-      this.alpha += this.alphaSpeed * this.alphaDir;
-      if(this.alpha >= 1) this.alphaDir = -1;
-      if(this.alpha <= 0.4) this.alphaDir = 1;
-
-      if (this.y > height + this.size) this.reset();
-    }
-    draw() {
-      ctx.font = `${this.size}px serif`;
-      ctx.globalAlpha = this.alpha;
-      ctx.shadowColor = "#ff2d95";
-      ctx.shadowBlur = 10;
-      ctx.fillText(emoji, this.x, this.y);
-      ctx.globalAlpha = 1;
-      ctx.shadowBlur = 0;
-    }
-  }
-
-  for(let i=0; i<maxEggplants; i++) {
-    eggplants.push(new Eggplant());
-  }
-
-  function animate() {
-    ctx.clearRect(0, 0, width, height);
-    for(let e of eggplants) {
-      e.update();
-      e.draw();
-    }
-    requestAnimationFrame(animate);
-  }
-  ctx.textBaseline = 'top';
-  animate();
-
-  // Звуки по клику
-  const soundTG = new Audio('zvuk-stona-devushki (mp3cut.net) (1).mp3');
-  const soundTwitter = new Audio('zvuk-stona-devushki (mp3cut.net) (2).mp3');
-  const soundSwap = new Audio('zvuk-stona-devushki (mp3cut.net) (3).mp3');
-
-  function playSoundAndOpen(sound, event) {
-    event.preventDefault();
-    sound.currentTime = 0;
-    sound.play();
-    window.open(event.currentTarget.href, '_blank', 'noopener');
-  }
-
-  document.getElementById('btn-tg').addEventListener('click', e => {
-    playSoundAndOpen(soundTG, e);
-  });
-
-  document.getElementById('btn-twitter').addEventListener('click', e => {
-    playSoundAndOpen(soundTwitter, e);
-  });
-
-  document.getElementById('btn-swap').addEventListener('click', e => {
-    playSoundAndOpen(soundSwap, e);
-  });
-
-  // Слайдшоу со смешными переходами
-  const slider = document.querySelector('.slider');
-
-  const images = [
-    "https://i.imgur.com/ACzLaEr.jpeg",
-    "https://i.imgur.com/QARn1dg.jpeg",
-    "https://i.imgur.com/SdIiREp.jpeg",
-    "https://i.imgur.com/AsSrnyA.jpeg",
-    "https://i.imgur.com/sIYvGTk.jpeg",
-    "https://i.imgur.com/JYKUzWT.jpeg",
-    "https://i.imgur.com/Onj5Mxp.jpeg",
-    "https://i.imgur.com/Z9gdesM.jpeg",
-    "https://i.imgur.com/STWafqp.jpeg",
-    "https://i.imgur.com/hngzQyS.jpeg",
-    "https://i.imgur.com/1Fy3oZ9.jpeg",
-    "https://i.imgur.com/C2GVydu.jpeg",
-    "https://i.imgur.com/LoFvnwp.jpeg",
-    "https://i.imgur.com/FsEkRT2.jpeg",
-    "https://i.imgur.com/pt1o3N6.jpeg",
-    "https://i.imgur.com/bxd0xaK.jpeg"
-  ];
-
-  let currentIndex = 0;
-  let isAnimating = false;
-
-  function createImageElement(src) {
-    const img = document.createElement('img');
-    img.src = src;
-    img.draggable = false;
-    img.style.opacity = '0';
-    img.style.transform = 'scale(0.6) rotate(-30deg)';
-    return img;
-  }
-
-  let imgCurrent = createImageElement(images[currentIndex]);
-  imgCurrent.classList.add('active');
-  slider.appendChild(imgCurrent);
-
-  function nextSlide() {
-    if (isAnimating) return;
-    isAnimating = true;
-
-    const nextIndex = (currentIndex + 1) % images.length;
-    const imgNext = createImageElement(images[nextIndex]);
-    slider.appendChild(imgNext);
-
-    imgNext.style.transition = 'none';
-    imgNext.style.opacity = '0';
-    imgNext.style.transform = 'scale(0.6) rotate(30deg)';
-    requestAnimationFrame(() => {
-      imgNext.style.transition = 'opacity 1s ease, transform 1s ease';
-      imgNext.style.opacity = '1';
-      imgNext.style.transform = 'scale(1) rotate(0deg)';
-    });
-
-    imgCurrent.style.transition = 'opacity 1s ease, transform 1s ease';
-    imgCurrent.style.opacity = '0';
-    imgCurrent.style.transform = 'scale(0.4) rotate(-45deg)';
-
-    setTimeout(() => {
-      slider.removeChild(imgCurrent);
-      imgCurrent = imgNext;
-      currentIndex = nextIndex;
-      isAnimating = false;
-    }, 1000);
-  }
-
-  setInterval(nextSlide, 3500);
-
-  // Анимация bounce для emoji в заголовке
-  const styleSheet = document.styleSheets[0];
-  styleSheet.insertRule(`@keyframes bounce {
-    0% { transform: translateY(0); }
-    100% { transform: translateY(-20px); }
-  }`, styleSheet.cssRules.length);
-
-</script>
 </body>
 </html>
+
+
 
 
 
