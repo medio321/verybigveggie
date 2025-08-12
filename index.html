@@ -10,7 +10,6 @@
   :root {
     --purple: #a020f0;
     --green: #39ff14;
-    --light: #fff0ff;
     --dark: #1a001f;
   }
 
@@ -24,7 +23,7 @@
     color: white;
   }
 
-  /* Фон слайдшоу */
+  /* Fullscreen Slideshow */
   .slideshow {
     position: fixed;
     top: 0; left: 0;
@@ -39,7 +38,7 @@
     height: 100%;
     object-fit: cover;
     opacity: 0;
-    animation: fade 24s infinite;
+    animation: fade 60s infinite;
   }
   @keyframes fade {
     0% {opacity: 0;}
@@ -48,17 +47,29 @@
     30% {opacity: 0;}
     100% {opacity: 0;}
   }
-  .slideshow img:nth-child(1) {animation-delay: 0s;}
-  .slideshow img:nth-child(2) {animation-delay: 6s;}
-  .slideshow img:nth-child(3) {animation-delay: 12s;}
-  .slideshow img:nth-child(4) {animation-delay: 18s;}
 
-  /* Контейнер */
+  /* Dynamic delays for many images */
+  .slideshow img:nth-child(1) {animation-delay: 0s;}
+  .slideshow img:nth-child(2) {animation-delay: 5s;}
+  .slideshow img:nth-child(3) {animation-delay: 10s;}
+  .slideshow img:nth-child(4) {animation-delay: 15s;}
+  .slideshow img:nth-child(5) {animation-delay: 20s;}
+  .slideshow img:nth-child(6) {animation-delay: 25s;}
+  .slideshow img:nth-child(7) {animation-delay: 30s;}
+  .slideshow img:nth-child(8) {animation-delay: 35s;}
+  .slideshow img:nth-child(9) {animation-delay: 40s;}
+  .slideshow img:nth-child(10) {animation-delay: 45s;}
+  .slideshow img:nth-child(11) {animation-delay: 50s;}
+  .slideshow img:nth-child(12) {animation-delay: 55s;}
+
+  /* Centered Container */
   .container {
-    position: relative;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     z-index: 2;
     max-width: 650px;
-    margin: auto;
     padding: 30px;
     background: rgba(0, 0, 0, 0.75);
     border-radius: 20px;
@@ -119,34 +130,69 @@
 <body>
 
 <div class="slideshow">
+  <!-- Photos -->
   <img src="https://i.imgur.com/xaysYKf.jpeg">
-  <img src="https://i.imgur.com/BKgNzkl.jpeg">
-  <img src="https://giffun.ru/wp-content/uploads/2022/05/1206845.gif">
+  <img src="https://i.imgur.com/aM3s81m.jpeg">
+  <img src="https://i.imgur.com/GokLYZV.jpeg">
+  <img src="https://i.imgur.com/h4yNyXf.jpeg">
+  <img src="https://i.imgur.com/rdS8tyQ.jpeg">
   <img src="https://i.imgur.com/rKmcxhs.jpeg">
+  <img src="https://i.imgur.com/BKgNzkl.jpeg">
+  <img src="https://i.imgur.com/6Gm6opR.jpeg">
+  <!-- GIFs -->
+  <img src="https://giffun.ru/wp-content/uploads/2022/05/tenor-2.gif">
+  <img src="https://cs9.pikabu.ru/post_img/2016/09/30/10/1475253517166130123.gif">
+  <img src="https://giffun.ru/wp-content/uploads/2022/05/1206845.gif">
+  <img src="https://media.tenor.com/SVX2Z2YTJeoAAAAM/eggplant.gif">
 </div>
 
 <div class="container">
   <h1>🍆 $Veggie</h1>
-  <p><strong>Главный мем-токен TON</strong></p>
-  <p>Баклажан, который все знают в Telegram:</p>
+  <p><strong>The ultimate meme token on TON</strong></p>
+  <p>The legendary eggplant known across Telegram:</p>
   <ul>
-    <li>В реакциях канала Дурова</li>
-    <li>В подарках Telegram</li>
-    <li>В эмодзи и стикерах</li>
-    <li>В новостях (про запрет анимации)</li>
+    <li>In Durov’s official channel reactions</li>
+    <li>In Telegram gifts</li>
+    <li>In emojis and stickers</li>
+    <li>📰 Even in the news — the story about banning the controversial animation</li>
   </ul>
-  <p>Теперь это не просто мем, а криптовалюта комьюнити! 🚀</p>
+  <p>Now this eggplant isn’t just a meme — it’s the main community token on TON! 😎</p>
   <div class="links">
-    <a href="https://t.me/verybigveggie" target="_blank">Telegram</a>
-    <a href="https://x.com/verybigveggie" target="_blank">Twitter</a>
-    <a href="https://dedust.io/swap/TON/EQAo-Mnt8Q2l9M90Sdk9OiTtzmVv3j8Tf382dBVpNRf9qWmY" target="_blank">Swap</a>
+    <a id="btn-tg" href="https://t.me/verybigveggie" target="_blank">Telegram</a>
+    <a id="btn-twitter" href="https://x.com/verybigveggie" target="_blank">Twitter</a>
+    <a id="btn-swap" href="https://dedust.io/swap/TON/EQAo-Mnt8Q2l9M90Sdk9OiTtzmVv3j8Tf382dBVpNRf9qWmY" target="_blank">Swap</a>
   </div>
   <footer>© 2025 $Veggie Meme Community</footer>
 </div>
 
+<!-- Sounds -->
+<audio id="sound-tg" src="zvuk-stona-devushki (mp3cut.net) (1).mp3" preload="auto"></audio>
+<audio id="sound-twitter" src="zvuk-stona-devushki (mp3cut.net) (2).mp3" preload="auto"></audio>
+<audio id="sound-swap" src="zvuk-stona-devushki (mp3cut.net) (3).mp3" preload="auto"></audio>
+
+<script>
+function playSoundAndOpen(sound, event) {
+  event.preventDefault();
+  sound.currentTime = 0;
+  sound.play();
+  setTimeout(() => {
+    window.open(event.currentTarget.href, '_blank', 'noopener');
+  }, 300);
+}
+
+document.getElementById('btn-tg').addEventListener('click', e => {
+  playSoundAndOpen(document.getElementById('sound-tg'), e);
+});
+document.getElementById('btn-twitter').addEventListener('click', e => {
+  playSoundAndOpen(document.getElementById('sound-twitter'), e);
+});
+document.getElementById('btn-swap').addEventListener('click', e => {
+  playSoundAndOpen(document.getElementById('sound-swap'), e);
+});
+</script>
+
 </body>
 </html>
-
 
 
 
