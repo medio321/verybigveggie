@@ -34,22 +34,23 @@
     z-index: 0;
   }
 
-  /* Анимированный GIF справа */
-  body::after {
-    content: "";
+  /* Контейнер для GIF-изображений на фоне */
+  #gif-background {
     position: fixed;
-    top: 50%;
-    right: 0;
-    transform: translateY(-50%);
-    width: 300px;
-    height: 300px;
-    background-image: url('https://giffun.ru/wp-content/uploads/2022/05/EthicalWellgroomedBooby-max-1mb.gif');
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
     pointer-events: none;
     z-index: 0;
-    opacity: 0.7;
+    overflow: hidden;
+  }
+
+  #gif-background img {
+    position: absolute;
+    user-select: none;
+    pointer-events: none;
+    will-change: transform, opacity;
+    animation-timing-function: ease-in-out;
   }
 
   .container {
@@ -147,6 +148,7 @@
 </style>
 </head>
 <body>
+  <div id="gif-background"></div>
   <canvas id="eggplant-canvas"></canvas>
   <div class="container" role="main">
     <h1><span class="emoji">🍆</span>$Veggie</h1>
@@ -168,6 +170,7 @@
   </div>
 
 <script>
+  // Падающие баклажаны
   const canvas = document.getElementById('eggplant-canvas');
   const ctx = canvas.getContext('2d');
 
@@ -225,9 +228,75 @@
   }
   ctx.textBaseline = 'top';
   animate();
+
+
+  // Фоновые GIF-ки
+  const gifUrls = [
+    'https://giffun.ru/wp-content/uploads/2022/05/tenor-2.gif',
+    'https://cs9.pikabu.ru/post_img/2016/09/30/10/1475253517166130123.gif',
+    'https://giffun.ru/wp-content/uploads/2022/05/1206845.gif',
+    'https://media.tenor.com/SVX2Z2YTJeoAAAAM/eggplant.gif'
+  ];
+
+  const gifBackground = document.getElementById('gif-background');
+
+  // Создаём N гифок на фоне (например, 12)
+  const numGifs = 12;
+
+  function randomRange(min, max) {
+    return Math.random() * (max - min) + min;
+  }
+
+  for (let i = 0; i < numGifs; i++) {
+    const img = document.createElement('img');
+    img.src = gifUrls[Math.floor(Math.random() * gifUrls.length)];
+    // Случайный размер 100-250px
+    const size = randomRange(100, 250);
+    img.style.width = size + 'px';
+    img.style.height = 'auto';
+
+    // Случайное позиционирование по экрану
+    img.style.top = randomRange(0, window.innerHeight - size) + 'px';
+    img.style.left = randomRange(0, window.innerWidth - size) + 'px';
+
+    // Анимация пульсации прозрачности и масштабирования
+    const animDuration = randomRange(6, 12); // секунд
+    img.style.animation = `pulse ${animDuration}s ease-in-out infinite alternate`;
+    img.style.animationDelay = `${randomRange(0, animDuration)}s`;
+
+    gifBackground.appendChild(img);
+  }
+
+  // Добавляем CSS-анимацию пульсации через JS
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes pulse {
+      0% {
+        opacity: 0.3;
+        transform: scale(0.8);
+      }
+      100% {
+        opacity: 0.8;
+        transform: scale(1.2);
+      }
+    }
+  `;
+  document.head.appendChild(style);
+
+  // Обновляем позицию при ресайзе (чтобы не выйти за экран)
+  window.addEventListener('resize', () => {
+    const imgs = gifBackground.querySelectorAll('img');
+    imgs.forEach(img => {
+      const size = img.offsetWidth;
+      img.style.top = Math.min(parseFloat(img.style.top), window.innerHeight - size) + 'px';
+      img.style.left = Math.min(parseFloat(img.style.left), window.innerWidth - size) + 'px';
+    });
+  });
 </script>
 </body>
 </html>
+
+
 
 
 
