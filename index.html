@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🍆 $Veggie — Meme Token</title>
+<style>
+    body {
+        margin: 0;
+        font-family: 'Comic Sans MS', cursive, sans-serif;
+        background: radial-gradient(circle at top, #4b006e, #1a001f);
+        color: white;
+        text-align: center;
+        overflow-x: hidden;
+    }
+    header {
+        padding: 50px 20px;
+    }
+    h1 {
+        font-size: 3rem;
+        text-shadow: 2px 2px #000;
+    }
+    h2 {
+        font-size: 1.5rem;
+        color: #ffb6ff;
+        margin-top: -10px;
+    }
+    .btn {
+        display: inline-block;
+        margin: 15px;
+        padding: 15px 30px;
+        font-size: 1.2rem;
+        background: #ff4ad8;
+        color: white;
+        border-radius: 30px;
+        text-decoration: none;
+        box-shadow: 0 5px 15px rgba(255,0,150,0.5);
+        animation: pulse 1.5s infinite;
+        transition: transform 0.2s;
+    }
+    .btn:hover {
+        transform: scale(1.1);
+    }
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.05); }
+        100% { transform: scale(1); }
+    }
+    section {
+        padding: 40px 20px;
+        max-width: 800px;
+        margin: auto;
+    }
+    .ca {
+        background: #300046;
+        padding: 15px;
+        border-radius: 10px;
+        margin-top: 20px;
+        font-family: monospace;
+        cursor: pointer;
+    }
+    footer {
+        background: #0a0010;
+        padding: 20px;
+        font-size: 0.8rem;
+        color: #aaa;
+        margin-top: 40px;
+    }
+    /* Floating emojis */
+    .emoji {
+        position: fixed;
+        font-size: 2rem;
+        animation: float 10s linear infinite;
+        opacity: 0.7;
+        z-index: -1;
+    }
+    @keyframes float {
+        0% { transform: translateY(100vh); }
+        100% { transform: translateY(-100vh); }
+    }
+</style>
+</head>
+<body>
+
+<!-- Floating 🍆 -->
+<script>
+for(let i=0; i<20; i++) {
+    let e = document.createElement('div');
+    e.className = 'emoji';
+    e.style.left = Math.random()*100 + 'vw';
+    e.style.animationDuration = (5+Math.random()*10) + 's';
+    e.innerHTML = '🍆';
+    document.body.appendChild(e);
+}
+</script>
+
+<header>
+    <h1>🍆 $Veggie — The Only Token That’s Harder Than Your Portfolio</h1>
+    <h2>Built on memes. Backed by eggplants.</h2>
+    <a class="btn" href="https://dedust.io/swap/TON/EQAo-Mnt8Q2l9M90Sdk9OiTtzmVv3j8Tf382dBVpNRf9qWmY" target="_blank">💸 BUY NOW</a>
+    <a class="btn" href="https://t.me/verybigveggie" target="_blank">📢 Telegram</a>
+    <a class="btn" href="https://x.com/verybigveggie" target="_blank">🐦 Twitter</a>
+</header>
+
+<section>
+    <h2>📖 About $Veggie</h2>
+    <p>
+        The image of the iconic eggplant, known to everyone on Telegram:
+        <br>· In the official reactions of Durov's channel  
+        <br>· In Telegram gifts  
+        <br>· In emojis and stickers  
+        <br>· Even in the news — the story about the disabling of the controversial animation  
+    </p>
+    <div class="ca" onclick="copyCA()">CA: EQAo-Mnt8Q2l9M90Sdk9OiTtzmVv3j8Tf382dBVpNRf9qWmY</div>
+</section>
+
+<footer>
+    🍆 100% meme-powered. No utility, only vibes. <br>
+    Not financial advice. Do your own research.
+</footer>
+
+<script>
+function copyCA() {
+    navigator.clipboard.writeText('EQAo-Mnt8Q2l9M90Sdk9OiTtzmVv3j8Tf382dBVpNRf9qWmY');
+    alert('Contract Address Copied!');
+}
+</script>
+
+</body>
+</html>
