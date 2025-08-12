@@ -125,6 +125,34 @@
     font-size: 0.85rem;
     color: #ccc;
   }
+
+  /* Reviews slider */
+  .reviews {
+    margin-top: 30px;
+    font-style: italic;
+    font-size: 1rem;
+    min-height: 70px; /* to prevent jump when text changes */
+    color: var(--green);
+    text-shadow: 1px 1px var(--purple);
+    position: relative;
+  }
+  .review-text {
+    position: absolute;
+    width: 100%;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+  }
+  .review-text.active {
+    opacity: 1;
+    position: relative;
+  }
+  .review-author {
+    margin-top: 8px;
+    font-weight: 700;
+    font-style: normal;
+    color: var(--purple);
+    text-shadow: none;
+  }
 </style>
 </head>
 <body>
@@ -162,6 +190,31 @@
     <a id="btn-twitter" href="https://x.com/verybigveggie" target="_blank" rel="noopener">Twitter</a>
     <a id="btn-swap" href="https://dedust.io/swap/TON/EQAo-Mnt8Q2l9M90Sdk9OiTtzmVv3j8Tf382dBVpNRf9qWmY" target="_blank" rel="noopener">Swap</a>
   </div>
+
+  <!-- Reviews section -->
+  <div class="reviews" id="reviews">
+    <div class="review-text active">
+      "The funniest and most vibrant community token I've ever seen!"<br/>
+      <span class="review-author">— Elon Musk</span>
+    </div>
+    <div class="review-text">
+      "A revolutionary meme token that's changing the game on TON."<br/>
+      <span class="review-author">— Vitalik Buterin</span>
+    </div>
+    <div class="review-text">
+      "I never thought eggplants could be this cool. $Veggie is the future!"<br/>
+      <span class="review-author">— Gary Vaynerchuk</span>
+    </div>
+    <div class="review-text">
+      "Join the $Veggie movement — memes and crypto combined perfectly."<br/>
+      <span class="review-author">— Mark Cuban</span>
+    </div>
+    <div class="review-text">
+      "Finally, a token that makes me smile every time I check it."<br/>
+      <span class="review-author">— Snoop Dogg</span>
+    </div>
+  </div>
+
   <footer>© 2025 $Veggie Meme Community</footer>
 </div>
 
@@ -187,6 +240,18 @@ document.getElementById('btn-twitter').addEventListener('click', e => {
 document.getElementById('btn-swap').addEventListener('click', e => {
   playSoundAndOpen(document.getElementById('sound-swap'), e);
 });
+
+// Reviews slider logic
+const reviews = document.querySelectorAll('.review-text');
+let currentReview = 0;
+
+function showNextReview() {
+  reviews[currentReview].classList.remove('active');
+  currentReview = (currentReview + 1) % reviews.length;
+  reviews[currentReview].classList.add('active');
+}
+
+setInterval(showNextReview, 6000);
 </script>
 
 </body>
