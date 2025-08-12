@@ -1,151 +1,117 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" >
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>🍆 $Veggie — Community Token</title>
-<style>
-  :root {
-    --eggplant-purple: #6a0dad;
-    --eggplant-green: #4caf50;
-    --eggplant-light: #f3e8ff;
-    --eggplant-dark: #3d0066;
-  }
-
-  body, html {
-    margin: 0; padding: 0; height: 100%; overflow: hidden;
-    background: var(--eggplant-light);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: var(--eggplant-dark);
-    position: relative;
-    overflow-x: hidden;
-  }
-
-  #eggplant-canvas {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  #media-background {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    pointer-events: none;
-    z-index: 0;
-    overflow: hidden;
-  }
-
-  #media-background img {
-    position: absolute;
-    user-select: none;
-    pointer-events: none;
-    will-change: transform, opacity, top, left;
-    border-radius: 8px;
-    object-fit: cover;
-    box-shadow: 0 0 10px rgba(106, 13, 173, 0.6);
-    transform-origin: center center;
-  }
-
-  .container {
-    position: relative;
-    max-width: 520px;
-    background: white;
-    box-shadow: 0 8px 30px rgba(106, 13, 173, 0.3);
-    border-radius: 16px;
-    padding: 30px 25px;
-    text-align: center;
-    margin: 40px auto;
-    z-index: 1;
-  }
-
-  h1 {
-    font-size: 2.8rem;
-    margin-bottom: 12px;
-    user-select: none;
-    color: var(--eggplant-purple);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 12px;
-  }
-
-  h1 .emoji {
-    font-size: 3.8rem;
-    filter: drop-shadow(1px 1px 2px #4caf50cc);
-  }
-
-  p {
-    font-size: 1.15rem;
-    line-height: 1.5;
-    margin: 14px 0;
-  }
-
-  ul {
-    list-style: none;
-    padding: 0;
-    margin: 20px 0 28px;
-    text-align: left;
-  }
-
-  ul li {
-    margin-bottom: 14px;
-    font-weight: 600;
-    padding-left: 20px;
-    position: relative;
-    color: var(--eggplant-dark);
-  }
-
-  ul li::before {
-    content: "";
-    position: absolute;
-    left: 0;
-  }
-
-  .links {
-    margin-top: 30px;
-  }
-
-  .links a {
-    text-decoration: none;
-    color: white;
-    background: var(--eggplant-purple);
-    padding: 14px 28px;
-    margin: 8px 12px;
-    border-radius: 50px;
-    font-weight: 700;
-    display: inline-block;
-    transition: background-color 0.3s ease;
-    box-shadow: 0 4px 10px rgba(106, 13, 173, 0.4);
-  }
-
-  .links a:hover {
-    background: var(--eggplant-green);
-    box-shadow: 0 6px 14px rgba(76, 175, 80, 0.6);
-  }
-
-  footer {
-    margin-top: 36px;
-    font-size: 0.9rem;
-    color: #666;
-  }
-
-  @media (max-width: 560px) {
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>🍆 $Veggie — Falling Media Background</title>
+  <style>
+    :root {
+      --eggplant-purple: #6a0dad;
+      --eggplant-green: #4caf50;
+      --eggplant-light: #f3e8ff;
+      --eggplant-dark: #3d0066;
+    }
+    body, html {
+      margin: 0; padding: 0; height: 100%;
+      background: var(--eggplant-light);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      color: var(--eggplant-dark);
+      overflow: hidden;
+      position: relative;
+    }
+    #media-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 0;
+      background: var(--eggplant-light);
+      display: block;
+    }
     .container {
-      margin: 12px;
-      padding: 20px;
+      position: relative;
+      max-width: 520px;
+      background: white;
+      box-shadow: 0 8px 30px rgba(106, 13, 173, 0.3);
+      border-radius: 16px;
+      padding: 30px 25px;
+      text-align: center;
+      margin: 40px auto;
+      z-index: 10;
     }
     h1 {
-      font-size: 2.2rem;
+      font-size: 2.8rem;
+      margin-bottom: 12px;
+      user-select: none;
+      color: var(--eggplant-purple);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
     }
-  }
-</style>
+    h1 .emoji {
+      font-size: 3.8rem;
+      filter: drop-shadow(1px 1px 2px #4caf50cc);
+    }
+    p {
+      font-size: 1.15rem;
+      line-height: 1.5;
+      margin: 14px 0;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 20px 0 28px;
+      text-align: left;
+    }
+    ul li {
+      margin-bottom: 14px;
+      font-weight: 600;
+      padding-left: 20px;
+      position: relative;
+      color: var(--eggplant-dark);
+    }
+    ul li::before {
+      content: "";
+      position: absolute;
+      left: 0;
+    }
+    .links {
+      margin-top: 30px;
+    }
+    .links a {
+      text-decoration: none;
+      color: white;
+      background: var(--eggplant-purple);
+      padding: 14px 28px;
+      margin: 8px 12px;
+      border-radius: 50px;
+      font-weight: 700;
+      display: inline-block;
+      transition: background-color 0.3s ease;
+      box-shadow: 0 4px 10px rgba(106, 13, 173, 0.4);
+    }
+    .links a:hover {
+      background: var(--eggplant-green);
+      box-shadow: 0 6px 14px rgba(76, 175, 80, 0.6);
+    }
+    footer {
+      margin-top: 36px;
+      font-size: 0.9rem;
+      color: #666;
+    }
+    @media (max-width: 560px) {
+      .container {
+        margin: 12px;
+        padding: 20px;
+      }
+      h1 {
+        font-size: 2.2rem;
+      }
+    }
+  </style>
 </head>
 <body>
-  <div id="media-background"></div>
-  <canvas id="eggplant-canvas"></canvas>
+  <canvas id="media-canvas"></canvas>
   <div class="container" role="main">
     <h1><span class="emoji">🍆</span>$Veggie</h1>
     <p><strong>A community token with a legend</strong></p>
@@ -166,8 +132,7 @@
   </div>
 
 <script>
-  // Падающие баклажаны (эмоджи)
-  const canvas = document.getElementById('eggplant-canvas');
+  const canvas = document.getElementById('media-canvas');
   const ctx = canvas.getContext('2d');
   let width, height;
 
@@ -180,52 +145,20 @@
   resize();
   window.addEventListener('resize', resize);
 
-  const emoji = "🍆";
-  const maxEggplants = 40;
-  const eggplants = [];
+  const cellSize = 120; // размер одного блока
+  const cols = Math.floor(width / cellSize);
+  const rows = Math.floor(height / cellSize);
 
-  class Eggplant {
-    constructor() {
-      this.reset();
-    }
-    reset() {
-      this.x = Math.random() * width;
-      this.y = Math.random() * -height;
-      this.size = 16 + Math.random() * 24;
-      this.speed = 1 + Math.random() * 2;
-      this.swing = Math.random() * 2 * Math.PI;
-      this.swingSpeed = 0.02 + Math.random() * 0.03;
-      this.swingAmplitude = 20 + Math.random() * 15;
-    }
-    update() {
-      this.y += this.speed;
-      this.swing += this.swingSpeed;
-      this.x += Math.sin(this.swing) * 0.8;
-
-      if (this.y > height + this.size) this.reset();
-    }
-    draw() {
-      ctx.font = `${this.size}px serif`;
-      ctx.fillText(emoji, this.x, this.y);
+  // Решетка занятости ячеек - false = свободна, true = занята
+  const grid = [];
+  for(let r=0; r<rows; r++) {
+    grid[r] = [];
+    for(let c=0; c<cols; c++) {
+      grid[r][c] = false;
     }
   }
 
-  for(let i=0; i<maxEggplants; i++) {
-    eggplants.push(new Eggplant());
-  }
-
-  function animate() {
-    ctx.clearRect(0, 0, width, height);
-    for(let e of eggplants) {
-      e.update();
-      e.draw();
-    }
-    requestAnimationFrame(animate);
-  }
-  ctx.textBaseline = 'top';
-  animate();
-
-  // Фото и гифки с улучшенной анимацией и увеличенным количеством в 3 раза
+  // Загружаем изображения заранее для лучшей производительности
   const photoUrls = [
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRsM8vRogohFUEAqPbCEoPrB-JUmEfTb_XEVg&s",
     "https://images.gastronom.ru/SMBq2KIuQpECJ8F2wM7pxlEt0jPQBBQdTJpZJuAsWS4/pr:product-cover-image/g:ce/rs:auto:0:0:0/L2Ntcy9hbGwtaW1hZ2VzL2I3ODQ3OTViLTRjYzEtNDQzOC1hZDgyLTdlN2U4NzhlZjhjMy5qcGc.webp",
@@ -253,87 +186,122 @@
     'https://media.tenor.com/SVX2Z2YTJeoAAAAM/eggplant.gif'
   ];
 
-  const mediaBackground = document.getElementById('media-background');
-  const totalMedia = 240;  // В 3 раза больше, чем было 80
+  // Промежуточный класс для изображения блока
+  class MediaBlock {
+    constructor(img, col, row, speed) {
+      this.img = img;
+      this.col = col;  // текущий столбец
+      this.row = row;  // текущая строка (начинается -1 — за экраном сверху)
+      this.speed = speed;  // скорость падения в ячейках в секунду
+      this.fallProgress = 0; // прогресс падения между строками 0..1
+      this.settled = false;  // стоит ли блок на месте
+    }
 
-  const mediaElements = [];
+    update(delta) {
+      if (this.settled) return;
 
-  function randomRange(min, max) {
-    return Math.random() * (max - min) + min;
+      this.fallProgress += this.speed * delta;
+
+      if (this.fallProgress >= 1) {
+        // Пытаемся перейти вниз на следующую строку
+        let nextRow = this.row + 1;
+        if (nextRow >= rows || grid[nextRow][this.col]) {
+          // Следующая клетка занята или нижний край — блок встал
+          if (this.row >= 0) grid[this.row][this.col] = true;
+          this.settled = true;
+          this.fallProgress = 1;
+        } else {
+          this.row = nextRow;
+          this.fallProgress = 0;
+        }
+      }
+    }
+
+    draw(ctx) {
+      // Позиция Y с учётом прогресса падения
+      const x = this.col * cellSize;
+      const y = (this.row + this.fallProgress - 1) * cellSize;
+
+      ctx.drawImage(this.img, x, y, cellSize, cellSize);
+    }
   }
 
-  for (let i = 0; i < totalMedia; i++) {
-    const img = document.createElement('img');
-    const sourceList = (i % 2 === 0) ? photoUrls : gifUrls;
-    img.src = sourceList[Math.floor(Math.random() * sourceList.length)];
+  // Загрузим все изображения заранее
+  const allUrls = [...photoUrls, ...gifUrls];
 
-    const size = randomRange(120, 220);
-    img.style.width = size + 'px';
-    img.style.height = 'auto';
-
-    img.style.top = randomRange(0, window.innerHeight - size) + 'px';
-    img.style.left = randomRange(0, window.innerWidth - size) + 'px';
-
-    mediaBackground.appendChild(img);
-
-    mediaElements.push({
-      el: img,
-      baseTop: parseFloat(img.style.top),
-      baseLeft: parseFloat(img.style.left),
-      baseSize: size,
-      opacitySpeed: randomRange(0.7, 2),
-      scaleSpeed: randomRange(0.7, 1.5),
-      moveSpeedX: randomRange(-40, 40),
-      moveSpeedY: randomRange(-40, 40),
-      rotationSpeed: randomRange(-0.1, 0.1),
-      rotation: Math.random() * 360,
-      phase: Math.random() * 2 * Math.PI,
-      jumpAmplitude: randomRange(10, 25),
-      jumpSpeed: randomRange(1.5, 3),
-      swingAmplitude: randomRange(10, 20),
-      swingSpeed: randomRange(1, 2),
+  function loadImage(url) {
+    return new Promise((resolve) => {
+      const img = new Image();
+      img.crossOrigin = "anonymous"; // на случай CORS
+      img.onload = () => resolve(img);
+      img.onerror = () => {
+        // Если ошибка, просто создаём пустой 1x1 пиксель (чтобы не ломать)
+        const empty = document.createElement('canvas');
+        empty.width = cellSize;
+        empty.height = cellSize;
+        resolve(empty);
+      };
+      img.src = url;
     });
   }
 
-  let lastTimestamp = 0;
-  function animateMedia(timestamp) {
-    if (!lastTimestamp) lastTimestamp = timestamp;
-    const delta = (timestamp - lastTimestamp) / 1000;
-    lastTimestamp = timestamp;
+  async function start() {
+    const images = await Promise.all(allUrls.map(loadImage));
 
-    mediaElements.forEach(media => {
-      const opacity = 0.4 + 0.6 * Math.sin(media.phase * media.opacitySpeed);
-      media.el.style.opacity = opacity.toFixed(2);
+    const blocks = [];
+    let dropInterval = 0.3; // каждые 0.3 секунды падает новый блок
+    let dropTimer = 0;
 
-      const jumpY = media.jumpAmplitude * Math.abs(Math.sin(timestamp * 0.002 * media.jumpSpeed));
-      const swingX = media.swingAmplitude * Math.sin(timestamp * 0.002 * media.swingSpeed);
-      const scale = 0.8 + 0.4 * Math.sin(media.phase * media.scaleSpeed);
+    let lastTime = performance.now();
 
-      media.rotation += media.rotationSpeed * 360 * delta;
+    function loop(now) {
+      const delta = (now - lastTime) / 1000;
+      lastTime = now;
 
-      media.el.style.transform = `translate(${media.moveSpeedX * Math.sin(media.phase) + swingX}px, ${media.moveSpeedY * Math.cos(media.phase) - jumpY}px) scale(${scale.toFixed(2)}) rotate(${media.rotation.toFixed(2)}deg)`;
+      dropTimer += delta;
+      if (dropTimer > dropInterval) {
+        dropTimer = 0;
 
-      media.el.style.top = (media.baseTop - jumpY + media.moveSpeedY * Math.cos(media.phase)) + 'px';
-      media.el.style.left = (media.baseLeft + media.moveSpeedX * Math.sin(media.phase) + swingX) + 'px';
+        // Новые блоки появляются случайно сверху в случайном столбце
+        // Если верхняя ячейка свободна, кидаем туда блок
+        const availableCols = [];
+        for (let c=0; c<cols; c++) {
+          if (!grid[0][c]) availableCols.push(c);
+        }
+        if (availableCols.length > 0) {
+          const col = availableCols[Math.floor(Math.random() * availableCols.length)];
+          const img = images[Math.floor(Math.random() * images.length)];
+          const speed = 2 + Math.random() * 2; // падение 2-4 ячейки в секунду
+          blocks.push(new MediaBlock(img, col, -1, speed));
+        }
+      }
 
-      media.phase += delta * (media.opacitySpeed + media.scaleSpeed);
-    });
+      // Обновляем и рисуем
+      ctx.clearRect(0, 0, width, height);
 
-    requestAnimationFrame(animateMedia);
+      blocks.forEach(block => block.update(delta));
+      blocks.forEach(block => block.draw(ctx));
+
+      requestAnimationFrame(loop);
+    }
+
+    loop(performance.now());
   }
-  requestAnimationFrame(animateMedia);
 
-  // При ресайзе экрана корректируем базовые позиции медиа
+  start();
+
+  // Обновляем размеры и сетку при ресайзе
   window.addEventListener('resize', () => {
-    mediaElements.forEach(media => {
-      const size = media.el.offsetWidth;
-      media.baseTop = Math.min(media.baseTop, window.innerHeight - size);
-      media.baseLeft = Math.min(media.baseLeft, window.innerWidth - size);
-    });
+    resize();
+    // Обновляем cols и rows и сбрасываем сетку (простое решение)
+    // При желании можно сохранять старые позиции, но для простоты сбросим
+    // Можно перезапустить анимацию при ресайзе для корректной работы.
+    location.reload();
   });
 </script>
 </body>
 </html>
+
 
 
 
