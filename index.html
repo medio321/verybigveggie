@@ -5,33 +5,44 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>🍆 $Veggie — Community Token</title>
 <style>
-  /* Цвета баклажана: фиолетовый и зеленый */
   :root {
-    --eggplant-purple: #6a0dad; /* темно-фиолетовый */
-    --eggplant-green: #4caf50;  /* свежий зеленый */
-    --eggplant-light: #f3e8ff;  /* светлый сиреневый фон */
-    --eggplant-dark: #3d0066;   /* очень темный фиолет */
+    --eggplant-purple: #6a0dad;
+    --eggplant-green: #4caf50;
+    --eggplant-light: #f3e8ff;
+    --eggplant-dark: #3d0066;
   }
 
-  body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: var(--eggplant-light);
-    color: var(--eggplant-dark);
+  /* Фиксируем canvas на заднем фоне */
+  body, html {
     margin: 0;
     padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
+    height: 100%;
+    overflow: hidden;
+    background: var(--eggplant-light);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--eggplant-dark);
+    position: relative;
+  }
+
+  #eggplant-canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none; /* чтобы клики проходили */
+    z-index: 0;
   }
 
   .container {
+    position: relative;
     max-width: 520px;
     background: white;
     box-shadow: 0 8px 30px rgba(106, 13, 173, 0.3);
     border-radius: 16px;
     padding: 30px 25px;
     text-align: center;
+    margin: 40px auto;
+    z-index: 1;
   }
 
   h1 {
@@ -119,7 +130,8 @@
 </style>
 </head>
 <body>
-  <div class="container">
+  <canvas id="eggplant-canvas"></canvas>
+  <div class="container" role="main">
     <h1><span class="emoji">🍆</span>$Veggie</h1>
     <p><strong>A community token with a legend</strong></p>
     <p>The image of the iconic eggplant, known to everyone on Telegram:</p>
@@ -137,10 +149,67 @@
     </div>
     <footer>© 2025 $Veggie Token Community</footer>
   </div>
+
+<script>
+  const canvas = document.getElementById('eggplant-canvas');
+  const ctx = canvas.getContext('2d');
+
+  let width, height;
+  function resize() {
+    width = window.innerWidth;
+    height = window.innerHeight;
+    canvas.width = width;
+    canvas.height = height;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  const emoji = "🍆";
+  const maxEggplants = 40;
+  const eggplants = [];
+
+  class Eggplant {
+    constructor() {
+      this.reset();
+    }
+    reset() {
+      this.x = Math.random() * width;
+      this.y = Math.random() * -height;
+      this.size = 16 + Math.random() * 24; // от 16 до 40 px
+      this.speed = 1 + Math.random() * 2; // скорость падения
+      this.swing = Math.random() * 2 * Math.PI;
+      this.swingSpeed = 0.02 + Math.random() * 0.03;
+      this.swingAmplitude = 20 + Math.random() * 15;
+    }
+    update() {
+      this.y += this.speed;
+      this.swing += this.swingSpeed;
+      this.x += Math.sin(this.swing) * 0.8;
+
+      if (this.y > height + this.size) this.reset();
+    }
+    draw() {
+      ctx.font = `${this.size}px serif`;
+      ctx.fillText(emoji, this.x, this.y);
+    }
+  }
+
+  for(let i=0; i<maxEggplants; i++) {
+    eggplants.push(new Eggplant());
+  }
+
+  function animate() {
+    ctx.clearRect(0, 0, width, height);
+    for(let e of eggplants) {
+      e.update();
+      e.draw();
+    }
+    requestAnimationFrame(animate);
+  }
+  ctx.textBaseline = 'top';
+  animate();
+</script>
 </body>
 </html>
 
-
-</body>
-</html>
 
