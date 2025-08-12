@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>🍆 $Veggie — Falling Media Background</title>
+  <title>🍆 $Veggie — Falling Media Background No Overlap</title>
   <style>
     :root {
       --eggplant-purple: #6a0dad;
@@ -149,10 +149,10 @@
     rows = Math.floor(height / cellSize);
     initGrid();
     blocks.length = 0;
-    dropTimer = 0;
+    dropIndex = 0;
   });
 
-  const cellSize = 180; // увеличенный размер блока 1.5х (было 120)
+  const cellSize = 180; // размер блока
   let cols = Math.floor(width / cellSize);
   let rows = Math.floor(height / cellSize);
 
@@ -168,7 +168,8 @@
   }
   initGrid();
 
-  const photoUrls = [
+  // Все фото + гифки вместе
+  const mediaUrls = [
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRsM8vRogohFUEAqPbCEoPrB-JUmEfTb_XEVg&s",
     "https://images.gastronom.ru/SMBq2KIuQpECJ8F2wM7pxlEt0jPQBBQdTJpZJuAsWS4/pr:product-cover-image/g:ce/rs:auto:0:0:0/L2Ntcy9hbGwtaW1hZ2VzL2I3ODQ3OTViLTRjYzEtNDQzOC1hZDgyLTdlN2U4NzhlZjhjMy5qcGc.webp",
     "https://masterpiecer-images.s3.yandex.net/d550c482612e11eebaf656181a0358a2:upscaled",
@@ -197,10 +198,9 @@
     "https://i.imgur.com/STWafqp.jpeg",
     "https://i.imgur.com/Z9gdesM.jpeg",
     "https://i.imgur.com/Onj5Mxp.jpeg",
-    "https://i.imgur.com/JYKUzWT.jpeg"
-  ];
+    "https://i.imgur.com/JYKUzWT.jpeg",
 
-  const gifUrls = [
+    // Гифки
     'https://giffun.ru/wp-content/uploads/2022/05/tenor-2.gif',
     'https://cs9.pikabu.ru/post_img/2016/09/30/10/1475253517166130123.gif',
     'https://giffun.ru/wp-content/uploads/2022/05/1206845.gif',
@@ -236,28 +236,6 @@
     }
   }
 
-  class ImageSelector {
-    constructor(images) {
-      this.images = images;
-      this.history = [];
-      this.historyMax = 12;
-    }
-    getRandom() {
-      let attempts = 0;
-      while (attempts < 20) {
-        const idx = Math.floor(Math.random() * this.images.length);
-        if (!this.history.includes(idx)) {
-          this.history.push(idx);
-          if (this.history.length > this.historyMax) this.history.shift();
-          return this.images[idx];
-        }
-        attempts++;
-      }
-      const idx = Math.floor(Math.random() * this.images.length);
-      return this.images[idx];
-    }
-  }
-
   async function loadImage(url) {
     return new Promise((resolve) => {
       const img = new Image();
@@ -274,16 +252,11 @@
   }
 
   async function start() {
-    const photoImages = await Promise.all(photoUrls.map(loadImage));
-    const gifImages = await Promise.all(gifUrls.map(loadImage));
-
-    const allImages = photoImages.concat(gifImages);
-    const imgSelector = new ImageSelector(allImages);
+    // Загружаем все изображения
+    const allImages = await Promise.all(mediaUrls.map(loadImage));
 
     const blocks = [];
-
-    let dropTimer = 0;
-    const dropInterval = 0.4; // увеличена скорость падения (интервал уменьшен)
+    let dropIndex = 0; // индекс изображения для падения
 
     let lastTime = performance.now();
 
@@ -291,11 +264,9 @@
       const delta = (now - lastTime) / 1000;
       lastTime = now;
 
-      dropTimer += delta;
-      if (dropTimer >= dropInterval) {
-        dropTimer = 0;
-
-        // Свободные колонки сверху (ряд 0)
+      // Если все места заняты или изображения кончились - прекращаем добавлять новые блоки
+      if (dropIndex < allImages.length) {
+        // Ищем свободные колонки в верхнем ряду
         const availableCols = [];
         for (let c=0; c<cols; c++) {
           if (!grid[0][c]) availableCols.push(c);
@@ -304,15 +275,16 @@
         if (availableCols.length > 0) {
           const col = availableCols[Math.floor(Math.random() * availableCols.length)];
 
-          // Самый низкий свободный ряд для этой колонки
+          // Находим самый низкий свободный ряд для этого столбца
           let targetRow = 0;
           for (let r=0; r<rows; r++) {
             if (!grid[r][col]) targetRow = r;
             else break;
           }
 
-          // Картинка (фото или гиф)
-          const img = imgSelector.getRandom();
+          // Выбираем следующее изображение из списка по порядку без повторов
+          const img = allImages[dropIndex];
+          dropIndex++;
 
           // Скорость падения px/сек (увеличена в 1.5 раза)
           const speed = 90 + Math.random() * 60;
