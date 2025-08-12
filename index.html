@@ -30,7 +30,6 @@
     user-select: none;
     display: flex;
     justify-content: center;
-    align-items: center; /* Центрируем вертикально */
   }
 
   #eggplant-canvas {
@@ -42,20 +41,16 @@
     filter: drop-shadow(0 0 6px #fff);
   }
 
-  /* Основной контейнер + колонка справа */
+  /* Основной контейнер, убрали flex-контейнер с колонками */
   .main-wrapper {
-    display: flex;
-    gap: 24px;
     max-width: 1200px;
     width: 100%;
     margin: 60px 20px;
     z-index: 1;
-    justify-content: center; /* Центрируем содержимое по горизонтали */
   }
 
   /* Левая основная часть */
   .container {
-    flex: 1.3;
     background: rgba(0,0,0,0.75);
     border-radius: 24px;
     padding: 40px 30px;
@@ -64,9 +59,6 @@
     border: 5px solid var(--pink);
     overflow: auto;
     max-height: 80vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
   }
 
   h1 {
@@ -155,8 +147,7 @@
     transition:
       background-color 0.3s ease,
       color 0.3s ease,
-      box-shadow 0.5s ease,
-      transform 0.3s ease;
+      box-shadow 0.5s ease;
     text-transform: uppercase;
   }
 
@@ -166,7 +157,7 @@
     box-shadow:
       0 0 18px var(--pink),
       0 0 36px var(--yellow);
-    transform: scale(1.1) rotate(5deg);
+    transform: scale(1.05);
   }
 
   footer {
@@ -177,19 +168,19 @@
     text-shadow: 0 0 3px #0007;
   }
 
-  /* Слайдшоу справа */
+  /* Слайдшоу внутри контейнера */
   .slider {
-    flex: 0.7;
     background: rgba(255, 255, 255, 0.15);
     border-radius: 20px;
     padding: 10px;
     box-shadow:
-      0 0 14px #ff2d95cc,
-      0 0 28px #9b59b6cc;
-    backdrop-filter: blur(14px);
+      0 0 10px #ff2d95aa,
+      0 0 20px #9b59b6aa;
+    backdrop-filter: blur(12px);
     position: relative;
     overflow: hidden;
-    max-height: 80vh;
+    max-height: 400px;
+    margin-top: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -202,11 +193,10 @@
     border-radius: 20px;
     user-select: none;
     pointer-events: none;
-    box-shadow: 0 0 30px rgba(255,45,149,0.9);
+    box-shadow: 0 0 20px rgba(255,45,149,0.7);
     opacity: 0;
     transform-origin: center center;
     transition: none;
-    filter: drop-shadow(0 0 15px #ff2d95cc);
   }
 
   .slider img.active {
@@ -215,31 +205,42 @@
     z-index: 2;
   }
 
-  /* Эпичные анимации переходов */
-  @keyframes epicIn {
+  /* Анимации для переходов */
+  @keyframes slideZoomRotateIn {
     0% {
       opacity: 0;
-      transform: translateX(50px) scale(0.7) rotate(25deg);
-      filter: blur(12px);
+      transform: scale(0.6) rotate(-45deg);
     }
     100% {
       opacity: 1;
-      transform: translateX(0) scale(1.3) rotate(0deg);
-      filter: blur(0);
+      transform: scale(1) rotate(0deg);
     }
   }
 
-  @keyframes epicOut {
+  @keyframes slideZoomRotateOut {
     0% {
       opacity: 1;
-      transform: translateX(0) scale(1.3) rotate(0deg);
-      filter: blur(0);
+      transform: scale(1) rotate(0deg);
     }
     100% {
       opacity: 0;
-      transform: translateX(-50px) scale(0.7) rotate(-25deg);
-      filter: blur(12px);
+      transform: scale(0.4) rotate(30deg);
     }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+  }
+
+  @keyframes swing {
+    0% { transform: rotate(-5deg); }
+    50% { transform: rotate(5deg); }
+    100% { transform: rotate(-5deg); }
   }
 
   @keyframes bounce {
@@ -254,25 +255,24 @@
 
   @media (max-width: 1000px) {
     .main-wrapper {
-      flex-direction: column;
       margin: 30px 10px;
     }
-    .container, .slider {
+    .container {
       max-height: none;
       width: 100%;
-      flex: none;
-      margin-bottom: 30px;
     }
     .slider {
       height: 320px;
+      max-height: none;
+      margin-top: 30px;
     }
   }
 </style>
 </head>
 <body>
   <canvas id="eggplant-canvas"></canvas>
-  <div class="main-wrapper" role="main" aria-label="$Veggie Meme Token Section">
-    <div class="container" aria-label="Token info">
+  <div class="main-wrapper">
+    <div class="container" role="main" aria-label="$Veggie Meme Token Info">
       <h1><span class="emoji" aria-hidden="true">🍆</span>$Veggie MEME</h1>
       <p class="lead">🚀 The Ultimate Meme Community Token 🚀</p>
       <p>Meet the legendary eggplant known everywhere on Telegram and beyond:</p>
@@ -290,11 +290,11 @@
         <a id="btn-swap" href="https://dedust.io/swap/TON/EQAo-Mnt8Q2l9M90Sdk9OiTtzmVv3j8Tf382dBVpNRf9qWmY" target="_blank" rel="noopener noreferrer" aria-label="Swap on Dedust link">Swap on Dedust</a>
       </div>
 
-      <footer>© 2025 $Veggie Meme Token Community</footer>
-    </div>
+      <div class="slider" aria-label="Funny images slideshow">
+        <!-- Слайды загрузятся через JS -->
+      </div>
 
-    <div class="slider" aria-label="Funny images slideshow">
-      <!-- Слайды добавляются через JS -->
+      <footer>© 2025 $Veggie Meme Token Community</footer>
     </div>
   </div>
 
@@ -394,7 +394,7 @@
     playSoundAndOpen(soundSwap, e);
   });
 
-  // Слайдшоу с эпичными переходами
+  // Слайдшоу со смешными переходами
   const slider = document.querySelector('.slider');
 
   const images = [
@@ -424,7 +424,7 @@
     img.src = src;
     img.draggable = false;
     img.style.opacity = '0';
-    img.style.transform = 'translateX(50px) scale(0.7) rotate(25deg)';
+    img.style.transform = 'scale(0.6) rotate(-30deg)';
     return img;
   }
 
@@ -440,32 +440,36 @@
     const imgNext = createImageElement(images[nextIndex]);
     slider.appendChild(imgNext);
 
-    // Входящая анимация следующего слайда
     imgNext.style.transition = 'none';
     imgNext.style.opacity = '0';
-    imgNext.style.transform = 'translateX(50px) scale(0.7) rotate(25deg)';
+    imgNext.style.transform = 'scale(0.6) rotate(30deg)';
     requestAnimationFrame(() => {
-      imgNext.style.transition = 'opacity 1.5s ease, transform 1.5s ease, filter 1.5s ease';
+      imgNext.style.transition = 'opacity 1s ease, transform 1s ease';
       imgNext.style.opacity = '1';
-      imgNext.style.transform = 'translateX(0) scale(1.3) rotate(0deg)';
-      imgNext.style.filter = 'blur(0)';
+      imgNext.style.transform = 'scale(1) rotate(0deg)';
     });
 
-    // Исходящая анимация текущего слайда
-    imgCurrent.style.transition = 'opacity 1.5s ease, transform 1.5s ease, filter 1.5s ease';
+    imgCurrent.style.transition = 'opacity 1s ease, transform 1s ease';
     imgCurrent.style.opacity = '0';
-    imgCurrent.style.transform = 'translateX(-50px) scale(0.7) rotate(-25deg)';
-    imgCurrent.style.filter = 'blur(12px)';
+    imgCurrent.style.transform = 'scale(0.4) rotate(-45deg)';
 
     setTimeout(() => {
       slider.removeChild(imgCurrent);
       imgCurrent = imgNext;
       currentIndex = nextIndex;
       isAnimating = false;
-    }, 1500);
+    }, 1000);
   }
 
-  setInterval(nextSlide, 4000);
+  setInterval(nextSlide, 3500);
+
+  // Анимация bounce для emoji в заголовке
+  const styleSheet = document.styleSheets[0];
+  styleSheet.insertRule(`@keyframes bounce {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-20px); }
+  }`, styleSheet.cssRules.length);
+
 </script>
 </body>
 </html>
