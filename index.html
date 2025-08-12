@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>🍆 $Veggie — Jumping Eggplants with Flying Media</title>
+<title>🍆 $Veggie — Community Token</title>
 <style>
   :root {
     --eggplant-purple: #6a0dad;
@@ -11,13 +11,44 @@
     --eggplant-light: #f3e8ff;
     --eggplant-dark: #3d0066;
   }
+
   body, html {
-    margin: 0; padding: 0; height: 100%; overflow-x: hidden;
+    margin: 0; padding: 0; height: 100%; overflow: hidden;
     background: var(--eggplant-light);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     color: var(--eggplant-dark);
     position: relative;
+    overflow-x: hidden;
   }
+
+  #eggplant-canvas {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  #media-background {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  #media-background img {
+    position: absolute;
+    user-select: none;
+    pointer-events: none;
+    will-change: transform, opacity, top, left;
+    border-radius: 8px;
+    object-fit: cover;
+    box-shadow: 0 0 10px rgba(106, 13, 173, 0.6);
+    transform-origin: center center;
+  }
+
   .container {
     position: relative;
     max-width: 520px;
@@ -26,9 +57,10 @@
     border-radius: 16px;
     padding: 30px 25px;
     text-align: center;
-    margin: 40px auto 60px auto;
-    z-index: 10;
+    margin: 40px auto;
+    z-index: 1;
   }
+
   h1 {
     font-size: 2.8rem;
     margin-bottom: 12px;
@@ -39,21 +71,25 @@
     align-items: center;
     gap: 12px;
   }
+
   h1 .emoji {
     font-size: 3.8rem;
     filter: drop-shadow(1px 1px 2px #4caf50cc);
   }
+
   p {
     font-size: 1.15rem;
     line-height: 1.5;
     margin: 14px 0;
   }
+
   ul {
     list-style: none;
     padding: 0;
     margin: 20px 0 28px;
     text-align: left;
   }
+
   ul li {
     margin-bottom: 14px;
     font-weight: 600;
@@ -61,14 +97,17 @@
     position: relative;
     color: var(--eggplant-dark);
   }
+
   ul li::before {
     content: "";
     position: absolute;
     left: 0;
   }
+
   .links {
     margin-top: 30px;
   }
+
   .links a {
     text-decoration: none;
     color: white;
@@ -81,75 +120,32 @@
     transition: background-color 0.3s ease;
     box-shadow: 0 4px 10px rgba(106, 13, 173, 0.4);
   }
+
   .links a:hover {
     background: var(--eggplant-green);
     box-shadow: 0 6px 14px rgba(76, 175, 80, 0.6);
   }
+
   footer {
     margin-top: 36px;
     font-size: 0.9rem;
     color: #666;
-    position: relative;
-    z-index: 10;
-  }
-  
-  /* Два больших баклажана слева и справа */
-  .eggplant {
-    position: fixed;
-    bottom: 0;
-    width: 140px;
-    height: auto;
-    animation: jump 2s ease-in-out infinite;
-    z-index: 5;
-    user-select: none;
-  }
-  .eggplant.left {
-    left: 20px;
-    animation-delay: 0s;
-  }
-  .eggplant.right {
-    right: 20px;
-    animation-delay: 1s;
-    transform: scaleX(-1); /* отражаем по горизонтали */
-  }
-  @keyframes jump {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-30px); }
   }
 
-  /* Вылетающие фото и гифки */
-  .flying-media {
-    position: fixed;
-    bottom: 140px; /* чуть выше баклажанов */
-    width: 60px;
-    height: auto;
-    opacity: 1;
-    pointer-events: none;
-    user-select: none;
-    will-change: transform, opacity;
-    animation: flyUp 3s forwards ease-out;
-    z-index: 8;
-  }
-  @keyframes flyUp {
-    0% {
-      transform: translate(0, 0) scale(0.5);
-      opacity: 1;
+  @media (max-width: 560px) {
+    .container {
+      margin: 12px;
+      padding: 20px;
     }
-    50% {
-      opacity: 1;
-    }
-    100% {
-      transform: translate(var(--x-move, 0), -300px) scale(1.5);
-      opacity: 0;
+    h1 {
+      font-size: 2.2rem;
     }
   }
 </style>
 </head>
 <body>
-
-  <img src="https://avatanplus.com/files/resources/mid/572624605c8ee1546cfe187b.png" alt="Left Eggplant" class="eggplant left" />
-  <img src="https://avatanplus.com/files/resources/mid/572624605c8ee1546cfe187b.png" alt="Right Eggplant" class="eggplant right" />
-
+  <div id="media-background"></div>
+  <canvas id="eggplant-canvas"></canvas>
   <div class="container" role="main">
     <h1><span class="emoji">🍆</span>$Veggie</h1>
     <p><strong>A community token with a legend</strong></p>
@@ -166,12 +162,71 @@
       <a href="https://x.com/verybigveggie" target="_blank" rel="noopener noreferrer">X (Twitter)</a>
       <a href="https://dedust.io/swap/TON/EQAo-Mnt8Q2l9M90Sdk9OiTtzmVv3j8Tf382dBVpNRf9qWmY" target="_blank" rel="noopener noreferrer">Swap on Dedust</a>
     </div>
+    <footer>© 2025 $Veggie Token Community</footer>
   </div>
 
 <script>
-  // Список фото и гифок, которые "вылетают"
-  const mediaUrls = [
-    // фото
+  // Падающие баклажаны (эмоджи)
+  const canvas = document.getElementById('eggplant-canvas');
+  const ctx = canvas.getContext('2d');
+  let width, height;
+
+  function resize() {
+    width = window.innerWidth;
+    height = window.innerHeight;
+    canvas.width = width;
+    canvas.height = height;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  const emoji = "🍆";
+  const maxEggplants = 40;
+  const eggplants = [];
+
+  class Eggplant {
+    constructor() {
+      this.reset();
+    }
+    reset() {
+      this.x = Math.random() * width;
+      this.y = Math.random() * -height;
+      this.size = 16 + Math.random() * 24;
+      this.speed = 1 + Math.random() * 2;
+      this.swing = Math.random() * 2 * Math.PI;
+      this.swingSpeed = 0.02 + Math.random() * 0.03;
+      this.swingAmplitude = 20 + Math.random() * 15;
+    }
+    update() {
+      this.y += this.speed;
+      this.swing += this.swingSpeed;
+      this.x += Math.sin(this.swing) * 0.8;
+
+      if (this.y > height + this.size) this.reset();
+    }
+    draw() {
+      ctx.font = `${this.size}px serif`;
+      ctx.fillText(emoji, this.x, this.y);
+    }
+  }
+
+  for(let i=0; i<maxEggplants; i++) {
+    eggplants.push(new Eggplant());
+  }
+
+  function animate() {
+    ctx.clearRect(0, 0, width, height);
+    for(let e of eggplants) {
+      e.update();
+      e.draw();
+    }
+    requestAnimationFrame(animate);
+  }
+  ctx.textBaseline = 'top';
+  animate();
+
+  // Фотки и гифки вместе с новыми фотками Imgur
+  const photoUrls = [
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRsM8vRogohFUEAqPbCEoPrB-JUmEfTb_XEVg&s",
     "https://images.gastronom.ru/SMBq2KIuQpECJ8F2wM7pxlEt0jPQBBQdTJpZJuAsWS4/pr:product-cover-image/g:ce/rs:auto:0:0:0/L2Ntcy9hbGwtaW1hZ2VzL2I3ODQ3OTViLTRjYzEtNDQzOC1hZDgyLTdlN2U4NzhlZjhjMy5qcGc.webp",
     "https://masterpiecer-images.s3.yandex.net/d550c482612e11eebaf656181a0358a2:upscaled",
@@ -180,12 +235,7 @@
     "https://thumbs.dreamstime.com/b/%D1%81%D0%BC%D0%B5%D1%88%D0%BD%D0%BE%D0%B9-%D1%80%D0%B0%D0%BA%D0%BE%D0%BD-%D1%81-%D0%B5-%D0%B0%D0%BD%D0%BD%D1%8B%D0%B9-%D0%BE%D0%B2%D0%BE%D1%89%D0%B5%D0%B9-61982616.jpg",
     "https://img-webcalypt.ru/uploads/admin/images/meme-templates/dfYt614V9mShRuDb3CLN31EenTP1jlMG.jpg",
     "https://basket-12.wbbasket.ru/vol1769/part176976/176976979/images/big/1.webp",
-    // гифки
-    'https://giffun.ru/wp-content/uploads/2022/05/tenor-2.gif',
-    'https://cs9.pikabu.ru/post_img/2016/09/30/10/1475253517166130123.gif',
-    'https://giffun.ru/wp-content/uploads/2022/05/1206845.gif',
-    'https://media.tenor.com/SVX2Z2YTJeoAAAAM/eggplant.gif',
-    // твои фотки с imgur
+
     "https://i.imgur.com/xaysYKf.jpeg",
     "https://i.imgur.com/aM3s81m.jpeg",
     "https://i.imgur.com/GokLYZV.jpeg",
@@ -196,40 +246,91 @@
     "https://i.imgur.com/6Gm6opR.jpeg"
   ];
 
-  const leftEggplant = document.querySelector('.eggplant.left');
-  const rightEggplant = document.querySelector('.eggplant.right');
+  const gifUrls = [
+    'https://giffun.ru/wp-content/uploads/2022/05/tenor-2.gif',
+    'https://cs9.pikabu.ru/post_img/2016/09/30/10/1475253517166130123.gif',
+    'https://giffun.ru/wp-content/uploads/2022/05/1206845.gif',
+    'https://media.tenor.com/SVX2Z2YTJeoAAAAM/eggplant.gif'
+  ];
 
-  // Функция создания и анимации "вылетающего" медиа
-  function createFlyingMedia(fromLeft) {
+  const mediaBackground = document.getElementById('media-background');
+  const totalMedia = 80;
+  const mediaElements = [];
+
+  function randomRange(min, max) {
+    return Math.random() * (max - min) + min;
+  }
+
+  for (let i = 0; i < totalMedia; i++) {
     const img = document.createElement('img');
-    img.src = mediaUrls[Math.floor(Math.random() * mediaUrls.length)];
-    img.className = 'flying-media';
-    // Начальная позиция чуть выше соответствующего баклажана по горизонтали
-    const eggplantRect = (fromLeft ? leftEggplant : rightEggplant).getBoundingClientRect();
+    // Чередуем фотки и гифки
+    const sourceList = (i % 2 === 0) ? photoUrls : gifUrls;
+    img.src = sourceList[Math.floor(Math.random() * sourceList.length)];
 
-    // Смещение X: рандомно влево или вправо в диапазоне +-100px
-    const xMove = (Math.random() * 200 - 100).toFixed(2) + 'px';
-    img.style.setProperty('--x-move', xMove);
+    // Размеры увеличены
+    const size = randomRange(100, 180);
+    img.style.width = size + 'px';
+    img.style.height = 'auto';
 
-    // Начальные координаты
-    img.style.left = (eggplantRect.left + eggplantRect.width/2 - 30) + 'px'; // центр изображения - 30 (половина ширины)
-    img.style.bottom = '140px';
+    img.style.top = randomRange(0, window.innerHeight - size) + 'px';
+    img.style.left = randomRange(0, window.innerWidth - size) + 'px';
 
-    document.body.appendChild(img);
+    mediaBackground.appendChild(img);
 
-    // Удаляем элемент после окончания анимации (3с)
-    img.addEventListener('animationend', () => {
-      img.remove();
+    mediaElements.push({
+      el: img,
+      baseTop: parseFloat(img.style.top),
+      baseLeft: parseFloat(img.style.left),
+      baseSize: size,
+      opacitySpeed: randomRange(0.5, 1.5),
+      scaleSpeed: randomRange(0.4, 1),
+      moveSpeedX: randomRange(-30, 30),  // увеличено смещение по Х
+      moveSpeedY: randomRange(-30, 30),  // увеличено смещение по Y
+      rotationSpeed: randomRange(-0.06, 0.06), // добавляем вращение
+      rotation: Math.random() * 360,
+      phase: Math.random() * 2 * Math.PI,
     });
   }
 
-  // Периодически вылетают из баклажанов фото/гифки
-  setInterval(() => createFlyingMedia(true), 1200); // слева
-  setInterval(() => createFlyingMedia(false), 1400); // справа
+  let lastTimestamp = 0;
+  function animateMedia(timestamp) {
+    if (!lastTimestamp) lastTimestamp = timestamp;
+    const delta = (timestamp - lastTimestamp) / 1000;
+    lastTimestamp = timestamp;
 
+    mediaElements.forEach(media => {
+      const opacity = 0.5 + 0.5 * Math.sin(media.phase);
+      media.el.style.opacity = opacity;
+
+      const scale = 0.85 + 0.3 * Math.sin(media.phase);
+      media.el.style.transform = `translate(${media.moveSpeedX * Math.sin(media.phase)}px, ${media.moveSpeedY * Math.cos(media.phase)}px) scale(${scale}) rotate(${media.rotation}deg)`;
+
+      media.rotation += media.rotationSpeed * 360 * delta;
+
+      const offsetX = media.moveSpeedX * Math.sin(media.phase);
+      const offsetY = media.moveSpeedY * Math.cos(media.phase);
+      media.el.style.top = (media.baseTop + offsetY) + 'px';
+      media.el.style.left = (media.baseLeft + offsetX) + 'px';
+
+      media.phase += delta * (media.opacitySpeed + media.scaleSpeed);
+    });
+
+    requestAnimationFrame(animateMedia);
+  }
+  requestAnimationFrame(animateMedia);
+
+  // При ресайзе
+  window.addEventListener('resize', () => {
+    mediaElements.forEach(media => {
+      const size = media.el.offsetWidth;
+      media.baseTop = Math.min(media.baseTop, window.innerHeight - size);
+      media.baseLeft = Math.min(media.baseLeft, window.innerWidth - size);
+    });
+  });
 </script>
 </body>
 </html>
+
 
 
 
