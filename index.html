@@ -337,28 +337,36 @@
     });
   });
 
-  // Звуки при наведении на кнопки
+  // Звуки по клику на кнопки
   const soundTG = document.getElementById('sound-tg');
   const soundTwitter = document.getElementById('sound-twitter');
   const soundSwap = document.getElementById('sound-swap');
 
-  document.getElementById('btn-tg').addEventListener('mouseenter', () => {
-    soundTG.currentTime = 0;
-    soundTG.play();
+  function playSoundAndOpen(sound, event) {
+    event.preventDefault(); // Останавливаем стандартный переход
+
+    sound.currentTime = 0;
+    sound.play();
+
+    // Открываем ссылку в новой вкладке
+    window.open(event.currentTarget.href, '_blank', 'noopener');
+  }
+
+  document.getElementById('btn-tg').addEventListener('click', e => {
+    playSoundAndOpen(soundTG, e);
   });
 
-  document.getElementById('btn-twitter').addEventListener('mouseenter', () => {
-    soundTwitter.currentTime = 0;
-    soundTwitter.play();
+  document.getElementById('btn-twitter').addEventListener('click', e => {
+    playSoundAndOpen(soundTwitter, e);
   });
 
-  document.getElementById('btn-swap').addEventListener('mouseenter', () => {
-    soundSwap.currentTime = 0;
-    soundSwap.play();
+  document.getElementById('btn-swap').addEventListener('click', e => {
+    playSoundAndOpen(soundSwap, e);
   });
 </script>
 </body>
 </html>
+
 
 
 
