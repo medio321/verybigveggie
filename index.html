@@ -148,12 +148,11 @@
     cols = Math.floor(width / cellSize);
     rows = Math.floor(height / cellSize);
     initGrid();
-    // При ресайзе просто перезапустим анимацию:
     blocks.length = 0;
     dropTimer = 0;
   });
 
-  const cellSize = 120; // размер блока
+  const cellSize = 180; // увеличенный размер блока 1.5х (было 120)
   let cols = Math.floor(width / cellSize);
   let rows = Math.floor(height / cellSize);
 
@@ -241,11 +240,11 @@
     constructor(images) {
       this.images = images;
       this.history = [];
-      this.historyMax = 10;
+      this.historyMax = 12;
     }
     getRandom() {
       let attempts = 0;
-      while (attempts < 15) {
+      while (attempts < 20) {
         const idx = Math.floor(Math.random() * this.images.length);
         if (!this.history.includes(idx)) {
           this.history.push(idx);
@@ -278,13 +277,13 @@
     const photoImages = await Promise.all(photoUrls.map(loadImage));
     const gifImages = await Promise.all(gifUrls.map(loadImage));
 
-    const photoSelector = new ImageSelector(photoImages);
-    const gifSelector = new ImageSelector(gifImages);
+    const allImages = photoImages.concat(gifImages);
+    const imgSelector = new ImageSelector(allImages);
 
     const blocks = [];
 
     let dropTimer = 0;
-    const dropInterval = 0.6; // интервал между новыми блоками (сек)
+    const dropInterval = 0.4; // увеличена скорость падения (интервал уменьшен)
 
     let lastTime = performance.now();
 
@@ -296,7 +295,7 @@
       if (dropTimer >= dropInterval) {
         dropTimer = 0;
 
-        // Найдем свободные колонки сверху (0 ряд)
+        // Свободные колонки сверху (ряд 0)
         const availableCols = [];
         for (let c=0; c<cols; c++) {
           if (!grid[0][c]) availableCols.push(c);
@@ -305,23 +304,18 @@
         if (availableCols.length > 0) {
           const col = availableCols[Math.floor(Math.random() * availableCols.length)];
 
-          // Найдем максимально низкий доступный ряд для этой колонки
+          // Самый низкий свободный ряд для этой колонки
           let targetRow = 0;
           for (let r=0; r<rows; r++) {
             if (!grid[r][col]) targetRow = r;
             else break;
           }
 
-          // Выбираем картинку
-          let img;
-          if (Math.random() < 0.6) {
-            img = photoSelector.getRandom();
-          } else {
-            img = gifSelector.getRandom();
-          }
+          // Картинка (фото или гиф)
+          const img = imgSelector.getRandom();
 
-          // Скорость падения в px/сек (медленнее, чтобы было плавно)
-          const speed = 60 + Math.random() * 40;
+          // Скорость падения px/сек (увеличена в 1.5 раза)
+          const speed = 90 + Math.random() * 60;
 
           blocks.push(new MediaBlock(img, col, targetRow, speed));
         }
@@ -342,6 +336,7 @@
 </script>
 </body>
 </html>
+
 
 
 
