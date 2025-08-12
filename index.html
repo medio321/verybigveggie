@@ -3,22 +3,31 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>🍆 $Veggie — Community Token</title>
+<title>🍆 $Veggie — MEME TOKEN</title>
 <style>
+  @import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&family=Press+Start+2P&display=swap');
+
   :root {
-    --eggplant-purple: #6a0dad;
-    --eggplant-green: #4caf50;
-    --eggplant-light: #f3e8ff;
-    --eggplant-dark: #3d0066;
+    --purple: #9b59b6;
+    --green: #2ecc71;
+    --pink: #ff2d95;
+    --yellow: #f1c40f;
+    --black: #111;
+    --white: #fff;
+    --shadow-glow: 0 0 10px #ff2d95, 0 0 20px #9b59b6, 0 0 30px #2ecc71;
+  }
+
+  * {
+    box-sizing: border-box;
   }
 
   body, html {
-    margin: 0; padding: 0; height: 100%; overflow: hidden;
-    background: var(--eggplant-light);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: var(--eggplant-dark);
-    position: relative;
+    margin: 0; padding: 0; height: 100%;
+    background: linear-gradient(135deg, #ff2d95, #9b59b6, #2ecc71);
+    font-family: 'Comic Neue', cursive, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: var(--white);
     overflow-x: hidden;
+    user-select: none;
   }
 
   #eggplant-canvas {
@@ -27,151 +36,185 @@
     width: 100%; height: 100%;
     pointer-events: none;
     z-index: 0;
-  }
-
-  #media-background {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
-    pointer-events: none;
-    z-index: 0;
-    overflow: hidden;
-  }
-
-  #media-background img {
-    position: absolute;
-    user-select: none;
-    pointer-events: none;
-    will-change: transform, opacity, top, left;
-    border-radius: 8px;
-    object-fit: cover;
-    box-shadow: 0 0 10px rgba(106, 13, 173, 0.6);
-    transform-origin: center center;
+    filter: drop-shadow(0 0 6px #fff);
   }
 
   .container {
     position: relative;
-    max-width: 520px;
-    background: white;
-    box-shadow: 0 8px 30px rgba(106, 13, 173, 0.3);
-    border-radius: 16px;
-    padding: 30px 25px;
+    max-width: 600px;
+    background: rgba(0,0,0,0.75);
+    border-radius: 24px;
+    padding: 40px 30px;
+    margin: 60px auto;
+    box-shadow: var(--shadow-glow);
     text-align: center;
-    margin: 40px auto;
     z-index: 1;
+    border: 5px solid var(--pink);
   }
 
   h1 {
-    font-size: 2.8rem;
-    margin-bottom: 12px;
-    user-select: none;
-    color: var(--eggplant-purple);
+    font-family: 'Press Start 2P', cursive;
+    font-size: 3rem;
+    margin-bottom: 20px;
+    letter-spacing: 0.08em;
+    text-shadow:
+      0 0 8px var(--pink),
+      0 0 20px var(--purple),
+      0 0 30px var(--yellow);
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 12px;
+    gap: 20px;
   }
 
   h1 .emoji {
-    font-size: 3.8rem;
-    filter: drop-shadow(1px 1px 2px #4caf50cc);
+    font-size: 5rem;
+    animation: bounce 1.2s infinite alternate;
+    filter: drop-shadow(0 0 6px var(--yellow));
+  }
+
+  p.lead {
+    font-weight: 700;
+    font-size: 1.4rem;
+    margin: 12px 0 24px;
+    color: var(--yellow);
+    text-shadow: 0 0 8px #000;
   }
 
   p {
-    font-size: 1.15rem;
-    line-height: 1.5;
-    margin: 14px 0;
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin: 12px 0 20px;
+    color: #eee;
+    text-shadow: 0 0 6px #0009;
   }
 
   ul {
     list-style: none;
     padding: 0;
-    margin: 20px 0 28px;
+    margin: 24px 0 32px;
     text-align: left;
+    font-weight: 700;
+    font-size: 1.1rem;
   }
 
   ul li {
-    margin-bottom: 14px;
-    font-weight: 600;
-    padding-left: 20px;
+    margin-bottom: 16px;
     position: relative;
-    color: var(--eggplant-dark);
+    padding-left: 36px;
+    color: var(--white);
+    text-shadow: 0 0 6px #000c;
   }
 
   ul li::before {
-    content: "";
+    content: "🍆";
     position: absolute;
     left: 0;
+    top: 0;
+    font-size: 1.3rem;
+    animation: pulse 2s infinite alternate;
   }
 
   .links {
-    margin-top: 30px;
+    margin-top: 36px;
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    flex-wrap: wrap;
   }
 
   .links a {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 1rem;
+    color: var(--black);
+    background: var(--yellow);
+    padding: 18px 40px;
+    border-radius: 40px;
+    font-weight: 900;
     text-decoration: none;
-    color: white;
-    background: var(--eggplant-purple);
-    padding: 14px 28px;
-    margin: 8px 12px;
-    border-radius: 50px;
-    font-weight: 700;
-    display: inline-block;
-    transition: background-color 0.3s ease;
-    box-shadow: 0 4px 10px rgba(106, 13, 173, 0.4);
+    box-shadow:
+      0 0 12px var(--yellow),
+      0 0 24px var(--pink);
+    transition:
+      background-color 0.3s ease,
+      color 0.3s ease,
+      box-shadow 0.5s ease;
+    text-transform: uppercase;
   }
 
   .links a:hover {
-    background: var(--eggplant-green);
-    box-shadow: 0 6px 14px rgba(76, 175, 80, 0.6);
+    background: var(--pink);
+    color: var(--white);
+    box-shadow:
+      0 0 18px var(--pink),
+      0 0 36px var(--yellow);
+    transform: scale(1.05);
   }
 
   footer {
-    margin-top: 36px;
+    margin-top: 48px;
+    font-family: 'Comic Neue', cursive;
     font-size: 0.9rem;
-    color: #666;
+    color: #ddd;
+    text-shadow: 0 0 3px #0007;
   }
 
-  @media (max-width: 560px) {
+  /* Animations */
+
+  @keyframes bounce {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-20px); }
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; text-shadow: 0 0 8px var(--yellow); }
+    50% { opacity: 0.6; text-shadow: 0 0 16px var(--pink); }
+  }
+
+  @media (max-width: 620px) {
     .container {
-      margin: 12px;
-      padding: 20px;
+      margin: 30px 15px;
+      padding: 30px 20px;
     }
     h1 {
       font-size: 2.2rem;
+      gap: 12px;
+    }
+    h1 .emoji {
+      font-size: 3.5rem;
+    }
+    .links a {
+      padding: 14px 28px;
+      font-size: 0.85rem;
     }
   }
 </style>
 </head>
 <body>
-  <div id="media-background"></div>
   <canvas id="eggplant-canvas"></canvas>
-  <div class="container" role="main">
-    <h1><span class="emoji">🍆</span>$Veggie</h1>
-    <p><strong>A community token with a legend</strong></p>
-    <p>The image of the iconic eggplant, known to everyone on Telegram:</p>
+  <div class="container" role="main" aria-label="$Veggie Meme Token Info">
+    <h1><span class="emoji" aria-hidden="true">🍆</span>$Veggie MEME</h1>
+    <p class="lead">🚀 The Ultimate Meme Community Token 🚀</p>
+    <p>Meet the legendary eggplant known everywhere on Telegram and beyond:</p>
     <ul>
-      <li>In the official reactions of Durov's channel</li>
-      <li>In Telegram gifts</li>
-      <li>In emojis and stickers</li>
-      <li>📰 Even in the news — the story about the disabling of the controversial animation</li>
+      <li>💬 Official reactions in Durov’s channel</li>
+      <li>🎁 Telegram gifts and stickers</li>
+      <li>🤣 The iconic meme that never dies</li>
+      <li>📰 Featured in Telegram news stories</li>
     </ul>
-    <p>This eggplant has already become a meme that lives in chats, news, and jokes.<br>Now it’s becoming the main community token on TON! 😎</p>
-    <div class="links">
-      <a id="btn-tg" href="https://t.me/verybigveggie" target="_blank" rel="noopener noreferrer">Telegram</a>
-      <a id="btn-twitter" href="https://x.com/verybigveggie" target="_blank" rel="noopener noreferrer">X (Twitter)</a>
-      <a id="btn-swap" href="https://dedust.io/swap/TON/EQAo-Mnt8Q2l9M90Sdk9OiTtzmVv3j8Tf382dBVpNRf9qWmY" target="_blank" rel="noopener noreferrer">Swap on Dedust</a>
+    <p>Join the fun and become part of the $Veggie legend on TON! 😎🔥</p>
+
+    <div class="links" role="navigation" aria-label="Social and swap links">
+      <a id="btn-tg" href="https://t.me/verybigveggie" target="_blank" rel="noopener noreferrer" aria-label="Telegram channel link">Telegram</a>
+      <a id="btn-twitter" href="https://x.com/verybigveggie" target="_blank" rel="noopener noreferrer" aria-label="X (Twitter) profile link">X (Twitter)</a>
+      <a id="btn-swap" href="https://dedust.io/swap/TON/EQAo-Mnt8Q2l9M90Sdk9OiTtzmVv3j8Tf382dBVpNRf9qWmY" target="_blank" rel="noopener noreferrer" aria-label="Swap on Dedust link">Swap on Dedust</a>
     </div>
-    <footer>© 2025 $Veggie Token Community</footer>
+
+    <footer>© 2025 $Veggie Meme Token Community</footer>
   </div>
 
-  <!-- Аудио с разными звуками стона -->
-  <audio id="sound-tg" src="zvuk-stona-devushki (mp3cut.net) (1).mp3" preload="auto"></audio>
-  <audio id="sound-twitter" src="zvuk-stona-devushki (mp3cut.net) (2).mp3" preload="auto"></audio>
-  <audio id="sound-swap" src="zvuk-stona-devushki (mp3cut.net) (3).mp3" preload="auto"></audio>
-
 <script>
-  // Падающие баклажаны (эмоджи)
+  // Падающие баклажаны (эмоджи) — оставим, но сделаем ярче и с мерцанием
   const canvas = document.getElementById('eggplant-canvas');
   const ctx = canvas.getContext('2d');
   let width, height;
@@ -186,7 +229,7 @@
   window.addEventListener('resize', resize);
 
   const emoji = "🍆";
-  const maxEggplants = 40;
+  const maxEggplants = 50;
   const eggplants = [];
 
   class Eggplant {
@@ -196,22 +239,35 @@
     reset() {
       this.x = Math.random() * width;
       this.y = Math.random() * -height;
-      this.size = 16 + Math.random() * 24;
-      this.speed = 1 + Math.random() * 2;
+      this.size = 24 + Math.random() * 36;
+      this.speed = 1.5 + Math.random() * 3;
       this.swing = Math.random() * 2 * Math.PI;
-      this.swingSpeed = 0.02 + Math.random() * 0.03;
-      this.swingAmplitude = 20 + Math.random() * 15;
+      this.swingSpeed = 0.03 + Math.random() * 0.04;
+      this.swingAmplitude = 30 + Math.random() * 20;
+      this.alpha = 0.4 + Math.random() * 0.6;
+      this.alphaSpeed = 0.01 + Math.random() * 0.02;
+      this.alphaDir = 1;
     }
     update() {
       this.y += this.speed;
       this.swing += this.swingSpeed;
-      this.x += Math.sin(this.swing) * 0.8;
+      this.x += Math.sin(this.swing) * 1.2;
+
+      // Пульсация прозрачности для мерцания
+      this.alpha += this.alphaSpeed * this.alphaDir;
+      if(this.alpha >= 1) this.alphaDir = -1;
+      if(this.alpha <= 0.4) this.alphaDir = 1;
 
       if (this.y > height + this.size) this.reset();
     }
     draw() {
       ctx.font = `${this.size}px serif`;
+      ctx.globalAlpha = this.alpha;
+      ctx.shadowColor = "#ff2d95";
+      ctx.shadowBlur = 10;
       ctx.fillText(emoji, this.x, this.y);
+      ctx.globalAlpha = 1;
+      ctx.shadowBlur = 0;
     }
   }
 
@@ -230,125 +286,15 @@
   ctx.textBaseline = 'top';
   animate();
 
-  // Фото и гифки с улучшенной анимацией и увеличенным количеством в 3 раза
-  const photoUrls = [
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRsM8vRogohFUEAqPbCEoPrB-JUmEfTb_XEVg&s",
-    "https://images.gastronom.ru/SMBq2KIuQpECJ8F2wM7pxlEt0jPQBBQdTJpZJuAsWS4/pr:product-cover-image/g:ce/rs:auto:0:0:0/L2Ntcy9hbGwtaW1hZ2VzL2I3ODQ3OTViLTRjYzEtNDQzOC1hZDgyLTdlN2U4NzhlZjhjMy5qcGc.webp",
-    "https://masterpiecer-images.s3.yandex.net/d550c482612e11eebaf656181a0358a2:upscaled",
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNtMiCCIaMx5pihMUVoqUZjP0HS6DChFHMag&s",
-    "https://masterpiecer-images.s3.yandex.net/ae040d9d610b11eeb5f11e5d9776cfa6:upscaled",
-    "https://thumbs.dreamstime.com/b/%D1%81%D0%BC%D0%B5%D1%88%D0%BD%D0%BE%D0%B9-%D1%80%D0%B0%D0%BA%D0%BE%D0%BD-%D1%81-%D0%B5-%D0%B0%D0%BD%D0%BD%D1%8B%D0%B9-%D0%BE%D0%B2%D0%BE%D1%89%D0%B5%D0%B9-61982616.jpg",
-    "https://img-webcalypt.ru/uploads/admin/images/meme-templates/dfYt614V9mShRuDb3CLN31EenTP1jlMG.jpg",
-    "https://basket-12.wbbasket.ru/vol1769/part176976/176976979/images/big/1.webp",
-
-    "https://i.imgur.com/xaysYKf.jpeg",
-    "https://i.imgur.com/aM3s81m.jpeg",
-    "https://i.imgur.com/GokLYZV.jpeg",
-    "https://i.imgur.com/h4yNyXf.jpeg",
-    "https://i.imgur.com/rdS8tyQ.jpeg",
-    "https://i.imgur.com/rKmcxhs.jpeg",
-    "https://i.imgur.com/BKgNzkl.jpeg",
-    "https://i.imgur.com/6Gm6opR.jpeg"
-  ];
-
-  const gifUrls = [
-    'https://giffun.ru/wp-content/uploads/2022/05/tenor-2.gif',
-    'https://cs9.pikabu.ru/post_img/2016/09/30/10/1475253517166130123.gif',
-    'https://giffun.ru/wp-content/uploads/2022/05/1206845.gif',
-    'https://media.tenor.com/SVX2Z2YTJeoAAAAM/eggplant.gif'
-  ];
-
-  const mediaBackground = document.getElementById('media-background');
-  const totalMedia = 240;  // В 3 раза больше, чем было 80
-
-  const mediaElements = [];
-
-  function randomRange(min, max) {
-    return Math.random() * (max - min) + min;
-  }
-
-  for (let i = 0; i < totalMedia; i++) {
-    const img = document.createElement('img');
-    const sourceList = (i % 2 === 0) ? photoUrls : gifUrls;
-    img.src = sourceList[Math.floor(Math.random() * sourceList.length)];
-
-    const size = randomRange(120, 220);
-    img.style.width = size + 'px';
-    img.style.height = 'auto';
-
-    img.style.top = randomRange(0, window.innerHeight - size) + 'px';
-    img.style.left = randomRange(0, window.innerWidth - size) + 'px';
-
-    mediaBackground.appendChild(img);
-
-    mediaElements.push({
-      el: img,
-      baseTop: parseFloat(img.style.top),
-      baseLeft: parseFloat(img.style.left),
-      baseSize: size,
-      opacitySpeed: randomRange(0.7, 2),
-      scaleSpeed: randomRange(0.7, 1.5),
-      moveSpeedX: randomRange(-40, 40),
-      moveSpeedY: randomRange(-40, 40),
-      rotationSpeed: randomRange(-0.1, 0.1),
-      rotation: Math.random() * 360,
-      phase: Math.random() * 2 * Math.PI,
-      jumpAmplitude: randomRange(10, 25),
-      jumpSpeed: randomRange(1.5, 3),
-      swingAmplitude: randomRange(10, 20),
-      swingSpeed: randomRange(1, 2),
-    });
-  }
-
-  let lastTimestamp = 0;
-  function animateMedia(timestamp) {
-    if (!lastTimestamp) lastTimestamp = timestamp;
-    const delta = (timestamp - lastTimestamp) / 1000;
-    lastTimestamp = timestamp;
-
-    mediaElements.forEach(media => {
-      const opacity = 0.4 + 0.6 * Math.sin(media.phase * media.opacitySpeed);
-      media.el.style.opacity = opacity.toFixed(2);
-
-      const jumpY = media.jumpAmplitude * Math.abs(Math.sin(timestamp * 0.002 * media.jumpSpeed));
-      const swingX = media.swingAmplitude * Math.sin(timestamp * 0.002 * media.swingSpeed);
-      const scale = 0.8 + 0.4 * Math.sin(media.phase * media.scaleSpeed);
-
-      media.rotation += media.rotationSpeed * 360 * delta;
-
-      media.el.style.transform = `translate(${media.moveSpeedX * Math.sin(media.phase) + swingX}px, ${media.moveSpeedY * Math.cos(media.phase) - jumpY}px) scale(${scale.toFixed(2)}) rotate(${media.rotation.toFixed(2)}deg)`;
-
-      media.el.style.top = (media.baseTop - jumpY + media.moveSpeedY * Math.cos(media.phase)) + 'px';
-      media.el.style.left = (media.baseLeft + media.moveSpeedX * Math.sin(media.phase) + swingX) + 'px';
-
-      media.phase += delta * (media.opacitySpeed + media.scaleSpeed);
-    });
-
-    requestAnimationFrame(animateMedia);
-  }
-  requestAnimationFrame(animateMedia);
-
-  // При ресайзе экрана корректируем базовые позиции медиа
-  window.addEventListener('resize', () => {
-    mediaElements.forEach(media => {
-      const size = media.el.offsetWidth;
-      media.baseTop = Math.min(media.baseTop, window.innerHeight - size);
-      media.baseLeft = Math.min(media.baseLeft, window.innerWidth - size);
-    });
-  });
-
-  // Звуки по клику на кнопки
-  const soundTG = document.getElementById('sound-tg');
-  const soundTwitter = document.getElementById('sound-twitter');
-  const soundSwap = document.getElementById('sound-swap');
+  // Звуки по клику оставил без изменений, но можно добавить мемный звук в будущем
+  const soundTG = new Audio('zvuk-stona-devushki (mp3cut.net) (1).mp3');
+  const soundTwitter = new Audio('zvuk-stona-devushki (mp3cut.net) (2).mp3');
+  const soundSwap = new Audio('zvuk-stona-devushki (mp3cut.net) (3).mp3');
 
   function playSoundAndOpen(sound, event) {
-    event.preventDefault(); // Останавливаем стандартный переход
-
+    event.preventDefault();
     sound.currentTime = 0;
     sound.play();
-
-    // Открываем ссылку в новой вкладке
     window.open(event.currentTarget.href, '_blank', 'noopener');
   }
 
@@ -366,6 +312,8 @@
 </script>
 </body>
 </html>
+
+
 
 
 
