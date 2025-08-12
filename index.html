@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>🍆 $Veggie — Falling Media Background No Overlap</title>
+  <title>🍆 $Veggie — Tetris-like Falling Media Background</title>
   <style>
     :root {
       --eggplant-purple: #6a0dad;
@@ -150,11 +150,12 @@
     initGrid();
     blocks.length = 0;
     dropIndex = 0;
+    columnsFillHeight = new Array(cols).fill(0);
   });
 
   const cellSize = 180; // размер блока
-  let cols = Math.floor(width / cellSize);
-  let rows = Math.floor(height / cellSize);
+  let cols = Math.floor(window.innerWidth / cellSize);
+  let rows = Math.floor(window.innerHeight / cellSize);
 
   let grid = [];
   function initGrid() {
@@ -168,7 +169,6 @@
   }
   initGrid();
 
-  // Все фото + гифки вместе
   const mediaUrls = [
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRsM8vRogohFUEAqPbCEoPrB-JUmEfTb_XEVg&s",
     "https://images.gastronom.ru/SMBq2KIuQpECJ8F2wM7pxlEt0jPQBBQdTJpZJuAsWS4/pr:product-cover-image/g:ce/rs:auto:0:0:0/L2Ntcy9hbGwtaW1hZ2VzL2I3ODQ3OTViLTRjYzEtNDQzOC1hZDgyLTdlN2U4NzhlZjhjMy5qcGc.webp",
@@ -200,7 +200,7 @@
     "https://i.imgur.com/Onj5Mxp.jpeg",
     "https://i.imgur.com/JYKUzWT.jpeg",
 
-    // Гифки
+    // GIFs
     'https://giffun.ru/wp-content/uploads/2022/05/tenor-2.gif',
     'https://cs9.pikabu.ru/post_img/2016/09/30/10/1475253517166130123.gif',
     'https://giffun.ru/wp-content/uploads/2022/05/1206845.gif',
@@ -215,20 +215,19 @@
       this.speed = speed; // px per second
 
       this.x = this.col * cellSize;
-      this.y = -cellSize; // начинаем сверху за экраном
-
+      this.y = -cellSize; // старт за экраном сверху
       this.targetY = this.targetRow * cellSize;
-
       this.settled = false;
     }
     update(delta) {
       if (this.settled) return;
-
       this.y += this.speed * delta;
       if (this.y >= this.targetY) {
         this.y = this.targetY;
         this.settled = true;
         grid[this.targetRow][this.col] = true;
+        // Обновляем высоту заполнения колонки
+        columnsFillHeight[this.col]++;
       }
     }
     draw(ctx) {
@@ -242,6 +241,7 @@
       img.crossOrigin = "anonymous";
       img.onload = () => resolve(img);
       img.onerror = () => {
+        // если ошибка - вернуть пустое холст
         const empty = document.createElement('canvas');
         empty.width = cellSize;
         empty.height = cellSize;
@@ -252,11 +252,12 @@
   }
 
   async function start() {
-    // Загружаем все изображения
     const allImages = await Promise.all(mediaUrls.map(loadImage));
-
     const blocks = [];
-    let dropIndex = 0; // индекс изображения для падения
+    let dropIndex = 0;
+
+    // Хранит, сколько блоков уже в каждой колонке (высота стенки)
+    columnsFillHeight = new Array(cols).fill(0);
 
     let lastTime = performance.now();
 
@@ -264,43 +265,42 @@
       const delta = (now - lastTime) / 1000;
       lastTime = now;
 
-      // Если все места заняты или изображения кончились - прекращаем добавлять новые блоки
-      if (dropIndex < allImages.length) {
-        // Ищем свободные колонки в верхнем ряду
-        const availableCols = [];
-        for (let c=0; c<cols; c++) {
-          if (!grid[0][c]) availableCols.push(c);
-        }
+      // Добавляем новые блоки если есть свободные места и картинки не закончились
+      while (dropIndex < allImages.length) {
+        // Ищем колонку с минимальной высотой заполнения
+        let minHeight = Math.min(...columnsFillHeight);
+        if (minHeight >= rows) break; // все заполнено
 
-        if (availableCols.length > 0) {
-          const col = availableCols[Math.floor(Math.random() * availableCols.length)];
+        // Получаем индекс колонки с минимальной высотой (если несколько - берем случайную)
+        let candidates = [];
+        columnsFillHeight.forEach((h, i) => {
+          if (h === minHeight) candidates.push(i);
+        });
+        let col = candidates[Math.floor(Math.random() * candidates.length)];
 
-          // Находим самый низкий свободный ряд для этого столбца
-          let targetRow = 0;
-          for (let r=0; r<rows; r++) {
-            if (!grid[r][col]) targetRow = r;
-            else break;
-          }
+        // Создаем падающий блок для этой колонки
+        const img = allImages[dropIndex];
+        dropIndex++;
 
-          // Выбираем следующее изображение из списка по порядку без повторов
-          const img = allImages[dropIndex];
-          dropIndex++;
+        // Скорость падения 135 - 225 px/сек (1.5x от базового)
+        const speed = 135 + Math.random() * 90;
 
-          // Скорость падения px/сек (увеличена в 1.5 раза)
-          const speed = 90 + Math.random() * 60;
+        const targetRow = columnsFillHeight[col];
+        blocks.push(new MediaBlock(img, col, targetRow, speed));
 
-          blocks.push(new MediaBlock(img, col, targetRow, speed));
-        }
+        // Только добавляем по одному блоку за кадр, чтобы падали постепенно
+        break;
       }
 
       ctx.clearRect(0, 0, width, height);
 
-      blocks.forEach(block => block.update(delta));
-      blocks.forEach(block => block.draw(ctx));
+      blocks.forEach(block => {
+        block.update(delta);
+        block.draw(ctx);
+      });
 
       requestAnimationFrame(loop);
     }
-
     loop(performance.now());
   }
 
@@ -308,7 +308,6 @@
 </script>
 </body>
 </html>
-
 
 
 
