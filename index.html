@@ -13,10 +13,7 @@
   }
 
   body, html {
-    margin: 0;
-    padding: 0;
-    height: 100%;
-    overflow: hidden;
+    margin: 0; padding: 0; height: 100%; overflow: hidden;
     background: var(--eggplant-light);
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     color: var(--eggplant-dark);
@@ -28,29 +25,29 @@
   #eggplant-canvas {
     position: fixed;
     top: 0; left: 0;
-    width: 100%;
-    height: 100%;
+    width: 100%; height: 100%;
     pointer-events: none;
     z-index: 0;
   }
 
-  /* Контейнер для GIF-изображений на фоне */
-  #gif-background {
+  /* Фон с фотками */
+  #photo-background {
     position: fixed;
     top: 0; left: 0;
-    width: 100%;
-    height: 100%;
+    width: 100%; height: 100%;
     pointer-events: none;
     z-index: 0;
     overflow: hidden;
   }
 
-  #gif-background img {
+  #photo-background img {
     position: absolute;
     user-select: none;
     pointer-events: none;
     will-change: transform, opacity, top, left;
-    animation-timing-function: ease-in-out;
+    border-radius: 8px;
+    object-fit: cover;
+    box-shadow: 0 0 10px rgba(106, 13, 173, 0.6);
   }
 
   .container {
@@ -148,7 +145,7 @@
 </style>
 </head>
 <body>
-  <div id="gif-background"></div>
+  <div id="photo-background"></div>
   <canvas id="eggplant-canvas"></canvas>
   <div class="container" role="main">
     <h1><span class="emoji">🍆</span>$Veggie</h1>
@@ -229,94 +226,88 @@
   ctx.textBaseline = 'top';
   animate();
 
-  // Вакханалия из гифок
-  const gifUrls = [
-    'https://giffun.ru/wp-content/uploads/2022/05/tenor-2.gif',
-    'https://cs9.pikabu.ru/post_img/2016/09/30/10/1475253517166130123.gif',
-    'https://giffun.ru/wp-content/uploads/2022/05/1206845.gif',
-    'https://media.tenor.com/SVX2Z2YTJeoAAAAM/eggplant.gif'
+  // Динамичные фотки на фоне
+  const photoUrls = [
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRsM8vRogohFUEAqPbCEoPrB-JUmEfTb_XEVg&s",
+    "https://images.gastronom.ru/SMBq2KIuQpECJ8F2wM7pxlEt0jPQBBQdTJpZJuAsWS4/pr:product-cover-image/g:ce/rs:auto:0:0:0/L2Ntcy9hbGwtaW1hZ2VzL2I3ODQ3OTViLTRjYzEtNDQzOC1hZDgyLTdlN2U4NzhlZjhjMy5qcGc.webp",
+    "https://masterpiecer-images.s3.yandex.net/d550c482612e11eebaf656181a0358a2:upscaled",
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTNtMiCCIaMx5pihMUVoqUZjP0HS6DChFHMag&s",
+    "https://masterpiecer-images.s3.yandex.net/ae040d9d610b11eeb5f11e5d9776cfa6:upscaled",
+    "https://thumbs.dreamstime.com/b/%D1%81%D0%BC%D0%B5%D1%88%D0%BD%D0%BE%D0%B9-%D1%80%D0%B0%D0%BA%D0%BE%D0%BD-%D1%81-%D0%B5-%D0%B0%D0%BD%D0%BD%D1%8B%D0%B9-%D0%BE%D0%B2%D0%BE%D1%89%D0%B5%D0%B9-61982616.jpg",
+    "https://img-webcalypt.ru/uploads/admin/images/meme-templates/dfYt614V9mShRuDb3CLN31EenTP1jlMG.jpg",
+    "https://basket-12.wbbasket.ru/vol1769/part176976/176976979/images/big/1.webp"
   ];
 
-  const gifBackground = document.getElementById('gif-background');
-
-  const numGifs = 60;
+  const photoBackground = document.getElementById('photo-background');
+  const numPhotos = 80;
+  const photos = [];
 
   function randomRange(min, max) {
     return Math.random() * (max - min) + min;
   }
 
-  // Массив для хранения параметров анимации каждого гифа
-  const gifs = [];
-
-  for (let i = 0; i < numGifs; i++) {
+  for (let i = 0; i < numPhotos; i++) {
     const img = document.createElement('img');
-    img.src = gifUrls[Math.floor(Math.random() * gifUrls.length)];
-
-    // Случайный размер от 80 до 220 px
-    const size = randomRange(80, 220);
+    img.src = photoUrls[Math.floor(Math.random() * photoUrls.length)];
+    const size = randomRange(70, 140);
     img.style.width = size + 'px';
     img.style.height = 'auto';
 
-    // Случайные начальные позиции
     img.style.top = randomRange(0, window.innerHeight - size) + 'px';
     img.style.left = randomRange(0, window.innerWidth - size) + 'px';
 
-    gifBackground.appendChild(img);
+    photoBackground.appendChild(img);
 
-    // Запоминаем для анимации
-    gifs.push({
+    photos.push({
       el: img,
       baseTop: parseFloat(img.style.top),
       baseLeft: parseFloat(img.style.left),
       baseSize: size,
       opacitySpeed: randomRange(0.5, 1.5),
       scaleSpeed: randomRange(0.4, 1),
-      moveSpeedX: randomRange(-10, 10),
-      moveSpeedY: randomRange(-10, 10),
+      moveSpeedX: randomRange(-15, 15),
+      moveSpeedY: randomRange(-15, 15),
       phase: Math.random() * 2 * Math.PI,
     });
   }
 
   let lastTimestamp = 0;
-  function animateGifs(timestamp) {
+  function animatePhotos(timestamp) {
     if (!lastTimestamp) lastTimestamp = timestamp;
     const delta = (timestamp - lastTimestamp) / 1000;
     lastTimestamp = timestamp;
 
-    gifs.forEach(gif => {
-      // Пульсация прозрачности: 0.3 - 1
-      const opacity = 0.65 + 0.35 * Math.sin(gif.phase);
-      gif.el.style.opacity = opacity;
+    photos.forEach(photo => {
+      const opacity = 0.5 + 0.5 * Math.sin(photo.phase);
+      photo.el.style.opacity = opacity;
 
-      // Пульсация размера: 0.85 - 1.15
-      const scale = 0.85 + 0.3 * Math.sin(gif.phase);
-      gif.el.style.transform = `scale(${scale})`;
+      const scale = 0.85 + 0.3 * Math.sin(photo.phase);
+      photo.el.style.transform = `scale(${scale})`;
 
-      // Легкие хаотичные смещения
-      const offsetX = gif.moveSpeedX * Math.sin(gif.phase);
-      const offsetY = gif.moveSpeedY * Math.cos(gif.phase);
-      gif.el.style.top = (gif.baseTop + offsetY) + 'px';
-      gif.el.style.left = (gif.baseLeft + offsetX) + 'px';
+      const offsetX = photo.moveSpeedX * Math.sin(photo.phase);
+      const offsetY = photo.moveSpeedY * Math.cos(photo.phase);
+      photo.el.style.top = (photo.baseTop + offsetY) + 'px';
+      photo.el.style.left = (photo.baseLeft + offsetX) + 'px';
 
-      // Обновляем фазу
-      gif.phase += delta * (gif.opacitySpeed + gif.scaleSpeed);
+      photo.phase += delta * (photo.opacitySpeed + photo.scaleSpeed);
     });
 
-    requestAnimationFrame(animateGifs);
+    requestAnimationFrame(animatePhotos);
   }
-  requestAnimationFrame(animateGifs);
+  requestAnimationFrame(animatePhotos);
 
-  // Корректируем позиции при ресайзе, чтобы не выходили за экран
+  // Корректируем позиции при ресайзе
   window.addEventListener('resize', () => {
-    gifs.forEach(gif => {
-      const size = gif.el.offsetWidth;
-      gif.baseTop = Math.min(gif.baseTop, window.innerHeight - size);
-      gif.baseLeft = Math.min(gif.baseLeft, window.innerWidth - size);
+    photos.forEach(photo => {
+      const size = photo.el.offsetWidth;
+      photo.baseTop = Math.min(photo.baseTop, window.innerHeight - size);
+      photo.baseLeft = Math.min(photo.baseLeft, window.innerWidth - size);
     });
   });
 </script>
 </body>
 </html>
+
 
 
 
