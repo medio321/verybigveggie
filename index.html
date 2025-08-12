@@ -225,7 +225,7 @@
   ctx.textBaseline = 'top';
   animate();
 
-  // Фотки и гифки вместе с новыми фотками Imgur
+  // Фото и гифки с улучшенной анимацией и увеличенным количеством в 3 раза
   const photoUrls = [
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRsM8vRogohFUEAqPbCEoPrB-JUmEfTb_XEVg&s",
     "https://images.gastronom.ru/SMBq2KIuQpECJ8F2wM7pxlEt0jPQBBQdTJpZJuAsWS4/pr:product-cover-image/g:ce/rs:auto:0:0:0/L2Ntcy9hbGwtaW1hZ2VzL2I3ODQ3OTViLTRjYzEtNDQzOC1hZDgyLTdlN2U4NzhlZjhjMy5qcGc.webp",
@@ -254,7 +254,8 @@
   ];
 
   const mediaBackground = document.getElementById('media-background');
-  const totalMedia = 80;
+  const totalMedia = 240;  // В 3 раза больше, чем было 80
+
   const mediaElements = [];
 
   function randomRange(min, max) {
@@ -263,12 +264,10 @@
 
   for (let i = 0; i < totalMedia; i++) {
     const img = document.createElement('img');
-    // Чередуем фотки и гифки
     const sourceList = (i % 2 === 0) ? photoUrls : gifUrls;
     img.src = sourceList[Math.floor(Math.random() * sourceList.length)];
 
-    // Размеры увеличены
-    const size = randomRange(100, 180);
+    const size = randomRange(120, 220);
     img.style.width = size + 'px';
     img.style.height = 'auto';
 
@@ -282,13 +281,17 @@
       baseTop: parseFloat(img.style.top),
       baseLeft: parseFloat(img.style.left),
       baseSize: size,
-      opacitySpeed: randomRange(0.5, 1.5),
-      scaleSpeed: randomRange(0.4, 1),
-      moveSpeedX: randomRange(-30, 30),  // увеличено смещение по Х
-      moveSpeedY: randomRange(-30, 30),  // увеличено смещение по Y
-      rotationSpeed: randomRange(-0.06, 0.06), // добавляем вращение
+      opacitySpeed: randomRange(0.7, 2),
+      scaleSpeed: randomRange(0.7, 1.5),
+      moveSpeedX: randomRange(-40, 40),
+      moveSpeedY: randomRange(-40, 40),
+      rotationSpeed: randomRange(-0.1, 0.1),
       rotation: Math.random() * 360,
       phase: Math.random() * 2 * Math.PI,
+      jumpAmplitude: randomRange(10, 25),
+      jumpSpeed: randomRange(1.5, 3),
+      swingAmplitude: randomRange(10, 20),
+      swingSpeed: randomRange(1, 2),
     });
   }
 
@@ -299,18 +302,19 @@
     lastTimestamp = timestamp;
 
     mediaElements.forEach(media => {
-      const opacity = 0.5 + 0.5 * Math.sin(media.phase);
-      media.el.style.opacity = opacity;
+      const opacity = 0.4 + 0.6 * Math.sin(media.phase * media.opacitySpeed);
+      media.el.style.opacity = opacity.toFixed(2);
 
-      const scale = 0.85 + 0.3 * Math.sin(media.phase);
-      media.el.style.transform = `translate(${media.moveSpeedX * Math.sin(media.phase)}px, ${media.moveSpeedY * Math.cos(media.phase)}px) scale(${scale}) rotate(${media.rotation}deg)`;
+      const jumpY = media.jumpAmplitude * Math.abs(Math.sin(timestamp * 0.002 * media.jumpSpeed));
+      const swingX = media.swingAmplitude * Math.sin(timestamp * 0.002 * media.swingSpeed);
+      const scale = 0.8 + 0.4 * Math.sin(media.phase * media.scaleSpeed);
 
       media.rotation += media.rotationSpeed * 360 * delta;
 
-      const offsetX = media.moveSpeedX * Math.sin(media.phase);
-      const offsetY = media.moveSpeedY * Math.cos(media.phase);
-      media.el.style.top = (media.baseTop + offsetY) + 'px';
-      media.el.style.left = (media.baseLeft + offsetX) + 'px';
+      media.el.style.transform = `translate(${media.moveSpeedX * Math.sin(media.phase) + swingX}px, ${media.moveSpeedY * Math.cos(media.phase) - jumpY}px) scale(${scale.toFixed(2)}) rotate(${media.rotation.toFixed(2)}deg)`;
+
+      media.el.style.top = (media.baseTop - jumpY + media.moveSpeedY * Math.cos(media.phase)) + 'px';
+      media.el.style.left = (media.baseLeft + media.moveSpeedX * Math.sin(media.phase) + swingX) + 'px';
 
       media.phase += delta * (media.opacitySpeed + media.scaleSpeed);
     });
@@ -319,7 +323,7 @@
   }
   requestAnimationFrame(animateMedia);
 
-  // При ресайзе
+  // При ресайзе экрана корректируем базовые позиции медиа
   window.addEventListener('resize', () => {
     mediaElements.forEach(media => {
       const size = media.el.offsetWidth;
@@ -330,6 +334,7 @@
 </script>
 </body>
 </html>
+
 
 
 
