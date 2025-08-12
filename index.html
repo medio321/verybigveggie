@@ -143,13 +143,20 @@
     canvas.height = height;
   }
   resize();
-  window.addEventListener('resize', resize);
+  window.addEventListener('resize', () => {
+    resize();
+    cols = Math.floor(width / cellSize);
+    rows = Math.floor(height / cellSize);
+    initGrid();
+    // При ресайзе просто перезапустим анимацию:
+    blocks.length = 0;
+    dropTimer = 0;
+  });
 
-  const cellSize = 120; // размер одного блока
+  const cellSize = 120; // размер блока
   let cols = Math.floor(width / cellSize);
   let rows = Math.floor(height / cellSize);
 
-  // Решетка занятости ячеек - false = свободна, true = занята
   let grid = [];
   function initGrid() {
     grid = [];
@@ -162,7 +169,6 @@
   }
   initGrid();
 
-  // Твои новые фото добавлены сюда:
   const photoUrls = [
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRsM8vRogohFUEAqPbCEoPrB-JUmEfTb_XEVg&s",
     "https://images.gastronom.ru/SMBq2KIuQpECJ8F2wM7pxlEt0jPQBBQdTJpZJuAsWS4/pr:product-cover-image/g:ce/rs:auto:0:0:0/L2Ntcy9hbGwtaW1hZ2VzL2I3ODQ3OTViLTRjYzEtNDQzOC1hZDgyLTdlN2U4NzhlZjhjMy5qcGc.webp",
@@ -182,7 +188,6 @@
     "https://i.imgur.com/BKgNzkl.jpeg",
     "https://i.imgur.com/6Gm6opR.jpeg",
 
-    // Добавленные новые фото:
     "https://i.imgur.com/bxd0xaK.jpeg",
     "https://i.imgur.com/pt1o3N6.jpeg",
     "https://i.imgur.com/FsEkRT2.jpeg",
@@ -203,57 +208,44 @@
     'https://media.tenor.com/SVX2Z2YTJeoAAAAM/eggplant.gif'
   ];
 
-  // Класс блока для падающего медиа
   class MediaBlock {
-    constructor(img, col, row, speed) {
+    constructor(img, col, targetRow, speed) {
       this.img = img;
       this.col = col;
-      this.row = row; // старт -1 — сверху за экраном
-      this.speed = speed; // ячеек в секунду
-      this.fallProgress = 0;
+      this.targetRow = targetRow;
+      this.speed = speed; // px per second
+
+      this.x = this.col * cellSize;
+      this.y = -cellSize; // начинаем сверху за экраном
+
+      this.targetY = this.targetRow * cellSize;
+
       this.settled = false;
     }
     update(delta) {
       if (this.settled) return;
 
-      this.fallProgress += this.speed * delta;
-
-      if (this.fallProgress >= 1) {
-        let nextRow = this.row + 1;
-
-        // Ищем, насколько можно опуститься вниз — делаем "притягивание" к самой нижней свободной ячейке в столбце
-        while (nextRow + 1 < rows && !grid[nextRow + 1][this.col]) {
-          nextRow++;
-        }
-
-        if (nextRow >= rows || grid[nextRow][this.col]) {
-          // Если ниже нет места или занято - останавливаемся
-          if (this.row >= 0) grid[this.row][this.col] = true;
-          this.settled = true;
-          this.fallProgress = 1;
-        } else {
-          this.row = nextRow;
-          this.fallProgress = 0;
-        }
+      this.y += this.speed * delta;
+      if (this.y >= this.targetY) {
+        this.y = this.targetY;
+        this.settled = true;
+        grid[this.targetRow][this.col] = true;
       }
     }
     draw(ctx) {
-      const x = this.col * cellSize;
-      const y = (this.row + this.fallProgress - 1) * cellSize;
-      ctx.drawImage(this.img, x, y, cellSize, cellSize);
+      ctx.drawImage(this.img, this.x, this.y, cellSize, cellSize);
     }
   }
 
-  // Для уменьшения повторов создадим очередь с историей последних использованных индексов
   class ImageSelector {
     constructor(images) {
       this.images = images;
       this.history = [];
-      this.historyMax = 8; // число последних изображений, которые нельзя повторять
+      this.historyMax = 10;
     }
     getRandom() {
       let attempts = 0;
-      while (attempts < 10) {
+      while (attempts < 15) {
         const idx = Math.floor(Math.random() * this.images.length);
         if (!this.history.includes(idx)) {
           this.history.push(idx);
@@ -262,7 +254,6 @@
         }
         attempts++;
       }
-      // Если не удалось избежать повтора — просто вернуть любое
       const idx = Math.floor(Math.random() * this.images.length);
       return this.images[idx];
     }
@@ -274,7 +265,6 @@
       img.crossOrigin = "anonymous";
       img.onload = () => resolve(img);
       img.onerror = () => {
-        // Пустой canvas на случай ошибки
         const empty = document.createElement('canvas');
         empty.width = cellSize;
         empty.height = cellSize;
@@ -285,18 +275,16 @@
   }
 
   async function start() {
-    // Загружаем фотки и гифки
     const photoImages = await Promise.all(photoUrls.map(loadImage));
     const gifImages = await Promise.all(gifUrls.map(loadImage));
-
-    const allImages = [...photoImages, ...gifImages];
 
     const photoSelector = new ImageSelector(photoImages);
     const gifSelector = new ImageSelector(gifImages);
 
     const blocks = [];
-    let dropInterval = 0.15; // чаще падают блоки
+
     let dropTimer = 0;
+    const dropInterval = 0.6; // интервал между новыми блоками (сек)
 
     let lastTime = performance.now();
 
@@ -305,10 +293,10 @@
       lastTime = now;
 
       dropTimer += delta;
-      if (dropTimer > dropInterval) {
+      if (dropTimer >= dropInterval) {
         dropTimer = 0;
 
-        // Выбираем случайный столбец, где сверху свободно
+        // Найдем свободные колонки сверху (0 ряд)
         const availableCols = [];
         for (let c=0; c<cols; c++) {
           if (!grid[0][c]) availableCols.push(c);
@@ -317,7 +305,14 @@
         if (availableCols.length > 0) {
           const col = availableCols[Math.floor(Math.random() * availableCols.length)];
 
-          // Чередуем: с вероятностью 0.6 фото, 0.4 — гифка
+          // Найдем максимально низкий доступный ряд для этой колонки
+          let targetRow = 0;
+          for (let r=0; r<rows; r++) {
+            if (!grid[r][col]) targetRow = r;
+            else break;
+          }
+
+          // Выбираем картинку
           let img;
           if (Math.random() < 0.6) {
             img = photoSelector.getRandom();
@@ -325,9 +320,10 @@
             img = gifSelector.getRandom();
           }
 
-          // Скорость падения 1.5 - 3 ячейки в секунду
-          const speed = 1.5 + Math.random() * 1.5;
-          blocks.push(new MediaBlock(img, col, -1, speed));
+          // Скорость падения в px/сек (медленнее, чтобы было плавно)
+          const speed = 60 + Math.random() * 40;
+
+          blocks.push(new MediaBlock(img, col, targetRow, speed));
         }
       }
 
@@ -343,17 +339,11 @@
   }
 
   start();
-
-  window.addEventListener('resize', () => {
-    resize();
-    cols = Math.floor(width / cellSize);
-    rows = Math.floor(height / cellSize);
-    initGrid();
-    location.reload(); // для простоты просто перезагружаем страницу при ресайзе
-  });
 </script>
 </body>
 </html>
+
+
 
 
 
