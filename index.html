@@ -5,190 +5,151 @@
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>🍆 $Veggie — MEME TOKEN</title>
 <style>
-  @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Rubik:wght@700&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&family=Press+Start+2P&display=swap');
 
   :root {
-    --purple: #a020f0;
-    --green: #39ff14;
-    --dark: #1a001f;
+    --purple: #9b59b6;
+    --yellow: #f1c40f;
+    --pink: #ff69b4;
+    --green: #2ecc71;
   }
 
-  body, html {
+  body {
+    background: linear-gradient(135deg, var(--purple), var(--pink));
     margin: 0;
-    padding: 0;
-    height: 100%;
-    background: var(--dark);
-    font-family: 'Rubik', sans-serif;
-    overflow: hidden;
+    font-family: 'Comic Neue', cursive;
     color: white;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
-  /* Fullscreen Slideshow */
-  .slideshow {
-    position: fixed;
-    top: 0; left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 0;
-    overflow: hidden;
+  header {
+    text-align: center;
+    margin-top: 20px;
   }
+
+  header h1 {
+    font-family: 'Press Start 2P', cursive;
+    font-size: 2.5rem;
+    color: var(--yellow);
+    text-shadow: 3px 3px #000;
+  }
+
+  header p {
+    font-size: 1.2rem;
+  }
+
+  nav {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin: 30px auto;
+    align-items: center;
+  }
+
+  .btn {
+    background: var(--yellow);
+    color: black;
+    padding: 15px 25px;
+    font-size: 1rem;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: bold;
+    box-shadow: 0 4px #000;
+    transition: transform 0.2s, background 0.3s;
+  }
+
+  .btn:hover {
+    transform: scale(1.1);
+    background: var(--green);
+  }
+
+  /* Slideshow */
+  .slideshow {
+    margin-top: 30px;
+    width: 80%;
+    max-width: 500px;
+    height: 350px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 15px;
+    box-shadow: 0 0 20px #000;
+  }
+
   .slideshow img {
     position: absolute;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    opacity: 0;
-    animation: fade 60s infinite;
+    animation: fade 2s ease-in-out;
   }
+
   @keyframes fade {
-    0% {opacity: 0;}
-    5% {opacity: 1;}
-    25% {opacity: 1;}
-    30% {opacity: 0;}
-    100% {opacity: 0;}
-  }
-
-  /* Dynamic delays for many images */
-  .slideshow img:nth-child(1) {animation-delay: 0s;}
-  .slideshow img:nth-child(2) {animation-delay: 5s;}
-  .slideshow img:nth-child(3) {animation-delay: 10s;}
-  .slideshow img:nth-child(4) {animation-delay: 15s;}
-  .slideshow img:nth-child(5) {animation-delay: 20s;}
-  .slideshow img:nth-child(6) {animation-delay: 25s;}
-  .slideshow img:nth-child(7) {animation-delay: 30s;}
-  .slideshow img:nth-child(8) {animation-delay: 35s;}
-  .slideshow img:nth-child(9) {animation-delay: 40s;}
-  .slideshow img:nth-child(10) {animation-delay: 45s;}
-  .slideshow img:nth-child(11) {animation-delay: 50s;}
-  .slideshow img:nth-child(12) {animation-delay: 55s;}
-
-  /* Centered Container */
-  .container {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 2;
-    max-width: 650px;
-    padding: 30px;
-    background: rgba(0, 0, 0, 0.75);
-    border-radius: 20px;
-    box-shadow: 0 0 40px rgba(255, 0, 255, 0.5);
-    text-align: center;
-  }
-
-  h1 {
-    font-family: 'Press Start 2P', cursive;
-    font-size: 2.5rem;
-    color: var(--green);
-    text-shadow: 3px 3px var(--purple);
-  }
-
-  p {
-    font-size: 1.1rem;
-    line-height: 1.5;
-  }
-
-  ul {
-    text-align: left;
-    padding-left: 20px;
-  }
-  ul li {
-    margin-bottom: 12px;
-    font-size: 1rem;
-  }
-
-  .links {
-    margin-top: 20px;
-  }
-  .links a {
-    display: inline-block;
-    margin: 10px;
-    padding: 14px 24px;
-    font-size: 1rem;
-    font-weight: bold;
-    background: var(--purple);
-    color: white;
-    border-radius: 50px;
-    box-shadow: 0 0 20px var(--purple);
-    transition: all 0.3s ease;
-    text-decoration: none;
-  }
-  .links a:hover {
-    background: var(--green);
-    color: black;
-    box-shadow: 0 0 25px var(--green);
-  }
-
-  footer {
-    margin-top: 15px;
-    font-size: 0.85rem;
-    color: #ccc;
+    from {opacity: 0;}
+    to {opacity: 1;}
   }
 </style>
 </head>
 <body>
 
-<div class="slideshow">
-  <!-- Photos -->
-  <img src="https://i.imgur.com/xaysYKf.jpeg">
-  <img src="https://i.imgur.com/aM3s81m.jpeg">
-  <img src="https://i.imgur.com/GokLYZV.jpeg">
-  <img src="https://i.imgur.com/h4yNyXf.jpeg">
-  <img src="https://i.imgur.com/rdS8tyQ.jpeg">
-  <img src="https://i.imgur.com/rKmcxhs.jpeg">
-  <img src="https://i.imgur.com/BKgNzkl.jpeg">
-  <img src="https://i.imgur.com/6Gm6opR.jpeg">
-  <!-- GIFs -->
-  <img src="https://giffun.ru/wp-content/uploads/2022/05/tenor-2.gif">
-  <img src="https://cs9.pikabu.ru/post_img/2016/09/30/10/1475253517166130123.gif">
-  <img src="https://giffun.ru/wp-content/uploads/2022/05/1206845.gif">
-  <img src="https://media.tenor.com/SVX2Z2YTJeoAAAAM/eggplant.gif">
-</div>
-
-<div class="container">
+<header>
   <h1>🍆 $Veggie</h1>
-  <p><strong>The ultimate meme token on TON</strong></p>
-  <p>The legendary eggplant known across Telegram:</p>
-  <ul>
-    <li>In Durov’s official channel reactions</li>
-    <li>In Telegram gifts</li>
-    <li>In emojis and stickers</li>
-    <li>📰 Even in the news — the story about banning the controversial animation</li>
-  </ul>
-  <p>Now this eggplant isn’t just a meme — it’s the main community token on TON! 😎</p>
-  <div class="links">
-    <a id="btn-tg" href="https://t.me/verybigveggie" target="_blank">Telegram</a>
-    <a id="btn-twitter" href="https://x.com/verybigveggie" target="_blank">Twitter</a>
-    <a id="btn-swap" href="https://dedust.io/swap/TON/EQAo-Mnt8Q2l9M90Sdk9OiTtzmVv3j8Tf382dBVpNRf9qWmY" target="_blank">Swap</a>
-  </div>
-  <footer>© 2025 $Veggie Meme Community</footer>
+  <p>The most epic meme token of all time!</p>
+</header>
+
+<nav>
+  <a href="https://t.me/verybigveggie" class="btn" data-sound="sound1">Telegram</a>
+  <a href="https://x.com/verybigveggie" class="btn" data-sound="sound2">Twitter</a>
+  <a href="https://dedust.io/swap/TON/EQAo-Mnt8Q2l9M90Sdk" class="btn" data-sound="sound3">Buy Now</a>
+</nav>
+
+<div class="slideshow" id="slideshow">
+  <img src="https://i.imgur.com/ACzLaEr.jpeg" alt="">
+  <img src="https://i.imgur.com/QARn1dg.jpeg" alt="">
+  <img src="https://i.imgur.com/SdIiREp.jpeg" alt="">
+  <img src="https://i.imgur.com/AsSrny.jpeg" alt="">
+  <img src="https://media.giphy.com/media/3o6Zt481isNVuQI1l6/giphy.gif" alt="">
+  <img src="https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif" alt="">
+  <img src="https://media.giphy.com/media/26tOZ42Mg6pbTUPHW/giphy.gif" alt="">
+  <img src="https://media.giphy.com/media/3oriO0OEd9QIDdllqo/giphy.gif" alt="">
 </div>
 
-<!-- Sounds -->
-<audio id="sound-tg" src="zvuk-stona-devushki (mp3cut.net) (1).mp3" preload="auto"></audio>
-<audio id="sound-twitter" src="zvuk-stona-devushki (mp3cut.net) (2).mp3" preload="auto"></audio>
-<audio id="sound-swap" src="zvuk-stona-devushki (mp3cut.net) (3).mp3" preload="auto"></audio>
+<audio id="sound1" src="https://www.soundjay.com/buttons/button-1.mp3"></audio>
+<audio id="sound2" src="https://www.soundjay.com/buttons/button-2.mp3"></audio>
+<audio id="sound3" src="https://www.soundjay.com/buttons/button-3.mp3"></audio>
 
 <script>
-function playSoundAndOpen(sound, event) {
-  event.preventDefault();
-  sound.currentTime = 0;
-  sound.play();
-  setTimeout(() => {
-    window.open(event.currentTarget.href, '_blank', 'noopener');
-  }, 300);
-}
+  // Slideshow logic
+  const slides = document.querySelectorAll('#slideshow img');
+  let current = 0;
 
-document.getElementById('btn-tg').addEventListener('click', e => {
-  playSoundAndOpen(document.getElementById('sound-tg'), e);
-});
-document.getElementById('btn-twitter').addEventListener('click', e => {
-  playSoundAndOpen(document.getElementById('sound-twitter'), e);
-});
-document.getElementById('btn-swap').addEventListener('click', e => {
-  playSoundAndOpen(document.getElementById('sound-swap'), e);
-});
+  function showSlide(index) {
+    slides.forEach((slide, i) => {
+      slide.style.opacity = (i === index) ? '1' : '0';
+    });
+  }
+
+  function nextSlide() {
+    current = (current + 1) % slides.length;
+    showSlide(current);
+  }
+
+  showSlide(current);
+  setInterval(nextSlide, 2000);
+
+  // Button sounds
+  document.querySelectorAll('.btn').forEach(btn => {
+    btn.addEventListener('click', e => {
+      const soundId = btn.getAttribute('data-sound');
+      const audio = document.getElementById(soundId);
+      if (audio) {
+        audio.currentTime = 0;
+        audio.play();
+      }
+    });
+  });
 </script>
 
 </body>
